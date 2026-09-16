@@ -1,0 +1,855 @@
+<title>Friends of the Old Toll House</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#F5EEDD;
+    --bg-alt:#ECE1C6;
+    --surface:#FFFBF1;
+    --surface-2:#FBF2DE;
+    --ink:#2B2013;
+    --ink-soft:#5B4C36;
+    --ink-faint:#8A7A5E;
+    --accent:#AD6A34;
+    --accent-deep:#7E4C22;
+    --accent-soft:#E8CDA1;
+    --moss:#525D3B;
+    --moss-soft:#D8DCC0;
+    --rust:#953A25;
+    --line:#D9C79D;
+    --shadow:rgba(43,32,19,0.16);
+    --hero-ink:#FBF4E4;
+    --hero-scrim-top:rgba(20,15,8,0.05);
+    --hero-scrim-bot:rgba(15,11,6,0.82);
+    color-scheme:light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#171209;
+      --bg-alt:#1D170D;
+      --surface:#221A10;
+      --surface-2:#2A2014;
+      --ink:#F1E6CD;
+      --ink-soft:#CBB98F;
+      --ink-faint:#93835F;
+      --accent:#E0A459;
+      --accent-deep:#F0C182;
+      --accent-soft:#4C371D;
+      --moss:#A2AE7C;
+      --moss-soft:#333B22;
+      --rust:#D9755A;
+      --line:#3C301C;
+      --shadow:rgba(0,0,0,0.5);
+      --hero-scrim-top:rgba(10,8,4,0.15);
+      --hero-scrim-bot:rgba(8,6,3,0.9);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#171209;
+    --bg-alt:#1D170D;
+    --surface:#221A10;
+    --surface-2:#2A2014;
+    --ink:#F1E6CD;
+    --ink-soft:#CBB98F;
+    --ink-faint:#93835F;
+    --accent:#E0A459;
+    --accent-deep:#F0C182;
+    --accent-soft:#4C371D;
+    --moss:#A2AE7C;
+    --moss-soft:#333B22;
+    --rust:#D9755A;
+    --line:#3C301C;
+    --shadow:rgba(0,0,0,0.5);
+    --hero-scrim-top:rgba(10,8,4,0.15);
+    --hero-scrim-bot:rgba(8,6,3,0.9);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Source Serif 4","Iowan Old Style","Georgia",serif;
+    font-size:17px;
+    line-height:1.6;
+    padding-left:max(20px, env(safe-area-inset-left,0px));
+    padding-right:max(20px, env(safe-area-inset-right,0px));
+  }
+  h1,h2,h3,.display{
+    font-family:"Fraunces","Iowan Old Style",Georgia,serif;
+    font-weight:600;
+    text-wrap:balance;
+    color:var(--ink);
+    margin:0;
+  }
+  .mono{font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace; font-variant-numeric:tabular-nums;}
+  a{color:var(--accent-deep);}
+  :root[data-theme="dark"] a, @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) a{color:var(--accent);} }
+  img{max-width:100%; display:block;}
+  .wrap{max-width:800px; margin:0 auto;}
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:12.5px;
+    letter-spacing:.11em;
+    text-transform:uppercase;
+    color:var(--accent-deep);
+    font-weight:500;
+  }
+  :root[data-theme="dark"] .eyebrow, @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .eyebrow{color:var(--accent);} }
+
+  /* ---------- Top bar ---------- */
+  .topbar{
+    position:sticky;
+    top:env(safe-area-inset-top,0px);
+    z-index:50;
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    padding:10px max(20px, env(safe-area-inset-left,0px));
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    flex-wrap:wrap;
+  }
+  .brandmark{display:flex; align-items:center; gap:9px; font-family:"Fraunces",serif; font-weight:600; font-size:15px; color:var(--ink);}
+  .brandmark .sq{
+    width:24px;height:24px;border-radius:3px;
+    background:linear-gradient(155deg,var(--accent),var(--accent-deep));
+    display:inline-flex;align-items:center;justify-content:center;
+    color:var(--hero-ink); font-family:"IBM Plex Mono",monospace; font-size:11px; font-weight:600;
+    flex:none;
+  }
+  .topbar-links{display:flex; gap:8px; align-items:center; flex-wrap:wrap;}
+  .pill{
+    font-family:"IBM Plex Mono",monospace; font-size:12px; font-weight:500;
+    padding:7px 12px; border-radius:100px; border:1px solid var(--line);
+    color:var(--ink-soft); text-decoration:none; white-space:nowrap;
+    transition:border-color .15s, color .15s, background .15s;
+  }
+  .pill:hover{border-color:var(--accent); color:var(--accent-deep); background:var(--surface);}
+  .pill.solid{background:var(--accent); border-color:var(--accent); color:var(--hero-ink);}
+  .pill.solid:hover{background:var(--accent-deep); border-color:var(--accent-deep); color:var(--hero-ink);}
+
+  .langtoggle{
+    display:flex; border:1px solid var(--line); border-radius:100px; overflow:hidden;
+    font-family:"IBM Plex Mono",monospace; font-size:12px; flex:none;
+  }
+  .langtoggle button{
+    border:none; background:transparent; padding:7px 13px; color:var(--ink-soft);
+    cursor:pointer; font-family:inherit; font-size:inherit; font-weight:600; letter-spacing:.03em;
+  }
+  .langtoggle button.active{background:var(--accent); color:#20160B;}
+  .langtoggle button:not(.active):hover{color:var(--ink);}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    margin:16px 0 0;
+    position:relative;
+    border-radius:14px;
+    overflow:hidden;
+    background:#2a2013;
+  }
+  .hero-img{
+    width:100%; height:auto; aspect-ratio:16/11; object-fit:cover; object-position:center 62%;
+    max-height:640px;
+  }
+  .hero-scrim{
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, var(--hero-scrim-top) 0%, var(--hero-scrim-bot) 78%);
+  }
+  .hero-copy{
+    position:absolute; left:0; right:0; bottom:0;
+    padding:28px clamp(18px,4vw,44px) 30px;
+    color:var(--hero-ink);
+  }
+  .hero-copy .eyebrow{color:var(--accent-soft);}
+  .hero-copy h1{
+    font-size:clamp(30px,5.4vw,50px);
+    line-height:1.06;
+    color:var(--hero-ink);
+    margin:10px 0 12px;
+    max-width:17ch;
+  }
+  .hero-copy p{
+    color:#EFE4CB;
+    max-width:54ch;
+    font-size:16.5px;
+    margin:0 0 20px;
+  }
+  .hero-ctas{display:flex; gap:10px; flex-wrap:wrap;}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:"IBM Plex Mono",monospace; font-size:13px; font-weight:500;
+    padding:12px 18px; border-radius:9px; text-decoration:none;
+    border:1px solid transparent;
+  }
+  .btn-primary{background:var(--accent); color:#20160B;}
+  .btn-primary:hover{background:var(--accent-soft);}
+  .btn-ghost{border-color:rgba(251,244,228,.55); color:var(--hero-ink);}
+  .btn-ghost:hover{border-color:#fff; background:rgba(251,244,228,.1);}
+
+  /* ---------- Sections ---------- */
+  section{padding:56px 0;}
+  section.alt{background:var(--bg-alt); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  section.alt > .wrap{padding-top:2px;}
+  .kicker{
+    display:flex; align-items:baseline; gap:12px; margin-bottom:16px;
+  }
+  .kicker .num{font-family:"IBM Plex Mono",monospace; color:var(--ink-faint); font-size:13px;}
+  h2.title{font-size:clamp(23px,3.4vw,30px); letter-spacing:-.01em;}
+  p{max-width:66ch; margin:0 0 14px;}
+  .max-p{max-width:66ch; color:var(--ink-soft);}
+
+  /* welcome */
+  .welcome{
+    display:flex; gap:22px; align-items:flex-start; padding:30px 0 10px;
+  }
+  .welcome .rule{width:2px; align-self:stretch; background:linear-gradient(var(--accent), transparent); flex:none; margin-top:6px;}
+  .welcome p{font-size:15.5px; color:var(--ink-soft); margin:0;}
+
+  /* timeline */
+  .timeline{margin-top:28px; border-left:2px dashed var(--line); padding-left:0;}
+  .tl-item{
+    position:relative; padding:0 0 26px 26px; margin-left:-2px; border-left:2px solid transparent;
+  }
+  .tl-item:last-child{padding-bottom:2px;}
+  .tl-dot{
+    position:absolute; left:-7px; top:3px; width:12px; height:12px; border-radius:50%;
+    background:var(--surface); border:2px solid var(--accent);
+  }
+  .tl-item.now .tl-dot{background:var(--accent); border-color:var(--accent);}
+  .tl-date{font-family:"IBM Plex Mono",monospace; font-size:13px; color:var(--accent-deep); font-weight:600; display:block; margin-bottom:3px;}
+  :root[data-theme="dark"] .tl-date, @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tl-date{color:var(--accent);}}
+  .tl-text{color:var(--ink-soft); font-size:15.5px; max-width:52ch;}
+
+  /* before/after */
+  .pair{display:flex; gap:14px; flex-wrap:wrap; margin-top:22px;}
+  .pair figure{flex:1 1 260px; margin:0; min-width:0;}
+  .pair img{width:100%; height:260px; object-fit:cover; border-radius:10px; border:1px solid var(--line);}
+  .pair figcaption{
+    font-family:"IBM Plex Mono",monospace; font-size:11.5px; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--ink-faint); margin-top:8px;
+  }
+
+  /* checklist */
+  .checklist{list-style:none; margin:22px 0 0; padding:0; display:grid; gap:12px;}
+  .checklist li{
+    display:flex; gap:12px; align-items:flex-start;
+    font-size:15.5px; color:var(--ink-soft);
+  }
+  .checklist svg{flex:none; margin-top:4px; width:16px; height:16px; color:var(--moss);}
+  .checklist b{color:var(--ink); font-weight:600;}
+
+  .side-figure{margin-top:26px;}
+  .side-figure img{width:100%; max-height:320px; object-fit:cover; border-radius:10px; border:1px solid var(--line);}
+  .side-figure figcaption{font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--ink-faint); margin-top:8px; letter-spacing:.04em;}
+
+  /* ledger table */
+  .ledger-wrap{margin-top:24px; overflow-x:auto; border:1px solid var(--line); border-radius:12px;}
+  table.ledger{width:100%; border-collapse:collapse; min-width:560px; background:var(--surface);}
+  table.ledger th{
+    text-align:left; font-family:"IBM Plex Mono",monospace; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--ink-faint); font-weight:500; padding:12px 16px; border-bottom:1px solid var(--line); background:var(--surface-2);
+  }
+  table.ledger td{padding:14px 16px; border-bottom:1px solid var(--line); font-size:14.5px; color:var(--ink-soft); vertical-align:top;}
+  table.ledger tr:last-child td{border-bottom:none;}
+  table.ledger td.priority{color:var(--ink); font-weight:600; font-family:"Fraunces",serif; font-size:15.5px;}
+  table.ledger td.band{font-family:"IBM Plex Mono",monospace; color:var(--accent-deep); font-size:13.5px; white-space:nowrap;}
+  :root[data-theme="dark"] table.ledger td.band, @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) table.ledger td.band{color:var(--accent);}}
+
+  /* business cards */
+  .biz-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(210px,1fr)); gap:14px; margin-top:24px;}
+  .biz-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:18px 18px 20px;
+  }
+  .biz-card h3{font-size:16px; margin-bottom:8px;}
+  .biz-card p{font-size:14px; color:var(--ink-soft); margin:0; max-width:none;}
+  .biz-tag{
+    display:inline-block; font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.07em; text-transform:uppercase;
+    color:var(--moss); background:var(--moss-soft); padding:3px 8px; border-radius:5px; margin-bottom:10px;
+  }
+
+  /* ticket tiers */
+  .ticket-row{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; margin-top:26px;}
+  .ticket{
+    position:relative;
+    background:
+      radial-gradient(circle at 0 50%, var(--bg) 7px, transparent 7.5px),
+      radial-gradient(circle at 100% 50%, var(--bg) 7px, transparent 7.5px),
+      var(--surface);
+    border:1px dashed var(--line);
+    border-radius:10px;
+    padding:20px 18px;
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .ticket .name{font-family:"Fraunces",serif; font-weight:600; font-size:17px;}
+  .ticket .amt{font-family:"IBM Plex Mono",monospace; font-size:19px; color:var(--accent-deep); font-weight:600;}
+  :root[data-theme="dark"] .ticket .amt, @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ticket .amt{color:var(--accent);}}
+  .ticket .perf{border-top:1px dashed var(--line); margin:2px 0 2px;}
+  .ticket p{font-size:13.8px; color:var(--ink-soft); margin:0; max-width:none;}
+
+  /* recognition */
+  .recog-list{list-style:none; margin:18px 0 0; padding:0; display:grid; gap:9px;}
+  .recog-list li{font-size:15px; color:var(--ink-soft); padding-left:16px; position:relative;}
+  .recog-list li::before{content:"—"; position:absolute; left:0; color:var(--accent);}
+  .note-box{
+    margin-top:20px; padding:14px 16px; border-left:3px solid var(--rust); background:var(--surface);
+    border-radius:0 8px 8px 0; font-size:14px; color:var(--ink-soft);
+  }
+
+  /* steps */
+  .steps{list-style:none; margin:26px 0 0; padding:0; counter-reset:step; display:grid; gap:18px;}
+  .steps li{display:flex; gap:16px; counter-increment:step;}
+  .steps li::before{
+    content:counter(step);
+    font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:14px;
+    flex:none; width:30px; height:30px; border-radius:50%;
+    background:var(--accent-soft); color:var(--accent-deep);
+    display:flex; align-items:center; justify-content:center;
+  }
+  :root[data-theme="dark"] .steps li::before, @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .steps li::before{color:#3A2812;}}
+  .steps p{margin:0; font-size:15.5px; color:var(--ink-soft); padding-top:4px;}
+
+  .road-figure{margin-top:28px; border-radius:10px; overflow:hidden; border:1px solid var(--line); position:relative;}
+  .road-figure img{width:100%; height:220px; object-fit:cover;}
+  .road-figure .cap{
+    position:absolute; right:14px; bottom:12px; font-family:"IBM Plex Mono",monospace; font-size:11px;
+    color:#F6EEDA; background:rgba(20,14,7,.55); padding:4px 9px; border-radius:5px; letter-spacing:.03em;
+  }
+
+  /* video */
+  .video-frame{
+    margin-top:22px; border-radius:12px; overflow:hidden; border:1px solid var(--line);
+    position:relative; width:100%; aspect-ratio:16/9; background:var(--surface-2);
+  }
+  .video-frame iframe{position:absolute; inset:0; width:100%; height:100%; border:0;}
+
+  /* contact */
+  .contact-grid{display:grid; grid-template-columns:1fr 1fr; gap:26px; margin-top:26px;}
+  @media (max-width:600px){ .contact-grid{grid-template-columns:1fr;} }
+  .contact-card{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:22px;}
+  .contact-card h3{font-size:16px; margin-bottom:12px;}
+  .contact-card .row{display:flex; gap:9px; font-size:14.5px; color:var(--ink-soft); margin-bottom:8px; align-items:flex-start;}
+  .contact-card .row svg{flex:none; width:15px; height:15px; margin-top:3px; color:var(--accent-deep);}
+  :root[data-theme="dark"] .contact-card .row svg, @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .contact-card .row svg{color:var(--accent);}}
+  .contact-card a{color:var(--ink-soft); text-decoration:underline; text-decoration-color:var(--line);}
+  .cta-row{display:flex; gap:10px; flex-wrap:wrap; margin-top:16px;}
+  .btn-alt{
+    display:inline-flex; align-items:center; gap:7px;
+    font-family:"IBM Plex Mono",monospace; font-size:12.5px; font-weight:500;
+    padding:10px 15px; border-radius:8px; border:1px solid var(--line); color:var(--ink);
+    text-decoration:none; background:var(--bg);
+  }
+  .btn-alt:hover{border-color:var(--accent); color:var(--accent-deep);}
+
+  /* disclaimer + footer */
+  .disclaimer{
+    max-width:800px; margin:0 auto; padding:34px 0 6px;
+    font-size:12.8px; line-height:1.65; color:var(--ink-faint);
+    border-top:1px solid var(--line); margin-top:10px;
+  }
+  .disclaimer p{max-width:none; margin:0 0 10px;}
+  footer{
+    background:var(--ink); color:var(--bg);
+    padding:38px max(20px, env(safe-area-inset-left,0px)) calc(30px + env(safe-area-inset-bottom,0px));
+    margin-top:0;
+  }
+  :root[data-theme="dark"] footer, @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) footer{background:#0E0B06;}}
+  footer .wrap{display:flex; flex-direction:column; gap:14px;}
+  footer .closing{font-family:"Fraunces",serif; font-size:20px; color:var(--bg); max-width:36ch;}
+  footer .credit{font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:#B7A87E; letter-spacing:.02em;}
+  :root[data-theme="dark"] footer .credit, @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) footer .credit{color:#8A7A55;}}
+
+  @media (max-width:560px){
+    section{padding:42px 0;}
+    .hero{margin-top:10px;}
+    .hero-copy{padding:20px 18px 24px;}
+  }
+</style>
+
+<div class="topbar">
+  <div class="brandmark"><span class="sq">FT</span><span data-i18n="brand">Friends of the Old Toll House</span></div>
+  <div class="topbar-links">
+    <div class="langtoggle" role="group" aria-label="Language">
+      <button type="button" id="btn-en" class="active" onclick="setLang('en')">EN</button>
+      <button type="button" id="btn-af" onclick="setLang('af')">AF</button>
+    </div>
+    <a class="pill" href="tel:0837728252" data-i18n="nav.call">Call</a>
+    <a class="pill" href="https://wa.me/27837728252" target="_blank" rel="noopener">WhatsApp</a>
+    <a class="pill solid" href="#ways-to-help" data-i18n="nav.cta">How to help</a>
+  </div>
+</div>
+
+<div class="hero">
+  <img class="hero-img" src="images/hero.jpg" data-i18n-alt="hero.alt" alt="The restored Old Toll House, its stone walls glowing under the Outeniqua Mountains">
+  <div class="hero-scrim"></div>
+  <div class="hero-copy">
+    <span class="eyebrow" data-i18n="hero.eyebrow">MONTAGU PASS · GEORGE</span>
+    <h1 data-i18n="hero.h1">A pass without its toll house is just a road.</h1>
+    <p data-i18n="hero.p">This little stone building has been collecting stories since the 1840s — first tolls, then fires, then decades of being quietly forgotten. A handful of volunteers refuse to let it go. Here's how your business or your name can become part of what happens next.</p>
+    <div class="hero-ctas">
+      <a class="btn btn-primary" href="#ways-to-help" data-i18n="hero.cta1">See how to help</a>
+      <a class="btn btn-ghost" href="#contact" data-i18n="hero.cta2">Get in touch</a>
+    </div>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="welcome">
+      <div class="rule"></div>
+      <p data-i18n="welcome.p">Signatura put this page together for the Friends of the Old Toll House — the small, stubborn group who've been patching this roof, chasing thieves off the property, and pouring pancake batter to keep the lights on. This isn't an investment pitch, and nobody's offering shares in a mountain pass. It's simpler than that: a building that matters needs people who'll show up for it. For a business, that can mean putting your name behind something you can point to and say — I helped fix that roof. For a person, it can mean a bench with your family's name on it, still standing on this mountain long after you are. Either way, we're asking you to be one of the people who showed up.</p>
+    </div>
+    <p class="eyebrow" style="display:block; margin:34px 0 6px;" data-i18n="watch.kicker">See it from above</p>
+    <div class="video-frame">
+      <iframe src="https://www.youtube.com/embed/i2v0HchlFTw" title="Montagu Pas &amp; Ou Tol Huis" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+    <p class="max-p" style="margin-top:10px; font-size:14px;" data-i18n="watch.p">A short flight over the Pass and the house itself — the stone, the roofline, the mountains it's been sitting under since the 1840s.</p>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="kicker"><span class="num mono">01</span><h2 class="title" data-i18n="s01.kicker">The landmark</h2></div>
+    <p class="max-p" data-i18n="s01.p1">The Old Toll House stands near the foot of Montagu Pass, about two kilometres short of the modern Outeniqua Pass. It went up in the mid-1840s alongside the pass itself — engineered by Henry Fancourt White, opened in the late 1840s — and for decades it was where farmers, transport riders and postal carts stopped to pay their way through the mountain.</p>
+    <p class="max-p" data-i18n="s01.p2">The walls are indigenous sandstone, nearly 700mm thick, wrapped around a footprint barely bigger than a large garage — about 16.3 by 6 metres. It doesn't look like much from the road. Stand next to it, with the Outeniquas rising behind, and it's hard not to feel how long it's been standing there. Montagu Pass is often called the oldest unaltered mountain pass still in use in South Africa. This little building is what's left of the people who built it.</p>
+
+    <div class="timeline">
+      <div class="tl-item"><span class="tl-dot"></span><span class="tl-date mono" data-i18n="tl1.date">c. 1844–1847</span><div class="tl-text" data-i18n="tl1.text">Raised in stone alongside the pass, as home to the toll keeper and his family.</div></div>
+      <div class="tl-item"><span class="tl-dot"></span><span class="tl-date mono" data-i18n="tl2.date">1855</span><div class="tl-text" data-i18n="tl2.text">Fire takes the original thatch roof. It's rebuilt under corrugated iron and keeps going.</div></div>
+      <div class="tl-item"><span class="tl-dot"></span><span class="tl-date mono" data-i18n="tl3.date">1972</span><div class="tl-text" data-i18n="tl3.text">Declared a National Monument, together with the pass it once guarded.</div></div>
+      <div class="tl-item now"><span class="tl-dot"></span><span class="tl-date mono" data-i18n="tl4.date">Today</span><div class="tl-text" data-i18n="tl4.text">Kept alive by volunteers, after years of neglect, theft, and a second fire that nearly finished the job.</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="kicker"><span class="num mono">02</span><h2 class="title" data-i18n="s02.kicker">Two fires, and it's still standing</h2></div>
+    <p class="max-p" data-i18n="s02.p">This house has burned twice. It's had its yellowwood beams stolen, its doors stripped, its Oregon pine floors carried off piece by piece. Each time, somebody who loved it came back with tools and started again. That's the whole history of this place, really — not grand, just relentless.</p>
+    <div class="pair">
+      <figure>
+        <img src="images/fire.jpg" data-i18n-alt="fire.alt" alt="The toll house after a structural fire, roof and windows burnt out">
+        <figcaption data-i18n="fire.cap">After the fire</figcaption>
+      </figure>
+      <figure>
+        <img src="images/hero.jpg" data-i18n-alt="restored.alt" alt="The same toll house restored, with a new roof and secure stonework" style="object-position:center 55%;">
+        <figcaption data-i18n="restored.cap">Standing again, today</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="kicker"><span class="num mono">03</span><h2 class="title" data-i18n="s03.kicker">Why it matters now</h2></div>
+    <p class="max-p" data-i18n="s03.p1">George and the Garden Route sell people a story about landscape, craft, and things built to last. The Toll House is that story, in stone — proof of how this region was opened up, taxed, and travelled, long before anyone called it a tourist route. On a good weekend it's a living museum, a coffee stop, a small wedding venue, a reason to pull over on the way up the Pass.</p>
+    <p class="max-p" data-i18n="s03.p2">Leave a monument like this without support for long enough and the mountain takes it back — damp in the walls, a door pried open, another storm through a roof nobody could afford to fix. That's not a footnote in a tourism brochure. That's George losing a piece of itself, one closed gate at a time.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="kicker"><span class="num mono">04</span><h2 class="title" data-i18n="s04.kicker">What the Friends have already done</h2></div>
+    <p class="max-p" data-i18n="s04.p">Friends of the Old Toll House started with one person, Gerda Stols, who decided this building wasn't going to disappear on her watch. Since then, volunteers have fitted security gates, patched roofs, rebuilt interiors by hand, and filled the house with furniture and photographs that local families simply gave away. They've kept the doors open on weekends even when floods closed the Pass and nobody was driving up to see them. What they're holding together, week to week:</p>
+    <ul class="checklist">
+      <li><svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l4 4 8-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="cl1">Keeping the monument weather-tight, secure, and open to the public.</span></li>
+      <li><svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l4 4 8-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="cl2">Finishing the museum inside, room by room, so the house can keep teaching people its own history.</span></li>
+      <li><svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l4 4 8-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="cl3">Funding the day-to-day — <b>pancakes, coffee, small events</b> — because that's what actually pays for someone to be here.</span></li>
+      <li><svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l4 4 8-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="cl4">Building the camping ground and ox-wagon stay they've been planning, as a real, heritage-true source of income.</span></li>
+      <li><svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l4 4 8-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="cl5">Improving the paths, the gardens, the signage, the Biblical Trail — carefully, without turning the stone into a stage set.</span></li>
+      <li><svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l4 4 8-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="cl6">Setting aside a reserve, so the next storm, theft, or closed-pass season doesn't shut the doors for good.</span></li>
+    </ul>
+    <figure class="side-figure">
+      <img src="images/interior.jpg" data-i18n-alt="interior.alt" alt="Inside the toll house museum, with donated furniture, portraits and lace hanging from the stone walls">
+      <figcaption data-i18n="interior.cap">Inside the museum-café — almost everything on these walls was somebody's gift.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="alt" id="ways-to-help">
+  <div class="wrap">
+    <div class="kicker"><span class="num mono">05</span><h2 class="title" data-i18n="s05.kicker">Where your support goes</h2></div>
+    <p class="max-p" data-i18n="s05.p">The numbers below are a starting point for a conversation, not a fixed price list — the final call on how money gets spent always sits with the Friends themselves. Signatura's part is to introduce people and help say thank you properly; we don't hold anyone's money unless that's agreed on paper first.</p>
+    <div class="ledger-wrap">
+      <table class="ledger">
+        <thead><tr><th data-i18n="tbl.h1">Priority</th><th data-i18n="tbl.h2">Indicative band</th><th data-i18n="tbl.h3">What it covers</th></tr></thead>
+        <tbody>
+          <tr><td class="priority" data-i18n="row1.p">Immediate fabric</td><td class="band">R25,000 – R80,000</td><td data-i18n="row1.d">Roof, joinery, security, damp-proofing, rewiring, fire readiness — the unglamorous work that keeps the building standing.</td></tr>
+          <tr><td class="priority" data-i18n="row2.p">Museum &amp; trail</td><td class="band">R15,000 – R50,000</td><td data-i18n="row2.d">Display cases, trail markers, printed history, somewhere to sit and take it all in.</td></tr>
+          <tr><td class="priority" data-i18n="row3.p">Hospitality kit</td><td class="band">R10,000 – R35,000</td><td data-i18n="row3.d">Kitchen equipment, furniture, umbrellas, signage — the small things that let the coffee shop pay for itself.</td></tr>
+          <tr><td class="priority" data-i18n="row4.p">Camping / ox-wagon</td><td class="band">R80,000 – R250,000+</td><td data-i18n="row4.d">Site works, services, and real ox-wagon units — a future income line, built the slow way.</td></tr>
+          <tr><td class="priority" data-i18n="row5.p">Operating reserve</td><td class="band">R30,000 – R100,000</td><td data-i18n="row5.d">Rates, insurance, fuel, and a cushion for the season the Pass floods and closes.</td></tr>
+          <tr><td class="priority" data-i18n="row6.p">Skills in kind</td><td class="band" data-i18n="row6.band">Value as given</td><td data-i18n="row6.d">Stone masons, carpenters, electricians, accountants, designers, caterers, security — whatever you're good at, they can probably use it.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <figure class="side-figure">
+      <img src="images/wagon.jpg" data-i18n-alt="wagon.alt" alt="A handbuilt ox-wagon model on display, a preview of the planned ox-wagon accommodation">
+      <figcaption data-i18n="wagon.cap">A hand-built model of the ox-wagon stay they're hoping to build.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="kicker"><span class="num mono">06</span><h2 class="title" data-i18n="s06.kicker">How a business can make a real difference</h2></div>
+    <p class="max-p" data-i18n="s06.p">Every pledge here has a name attached to it and a job it pays for — a roof that stops leaking, a gate that keeps thieves out, a season the doors stay open when they might have closed. This is the kind of giving you can drive past and point to.</p>
+    <div class="biz-grid">
+      <div class="biz-card">
+        <span class="biz-tag" data-i18n="biz1.tag">Recurring</span>
+        <h3 data-i18n="biz1.name">Patron business</h3>
+        <p data-i18n="biz1.desc">A yearly pledge — R5,000 to R50,000 is a good range to start from — with your name on a board at the house and in what the Friends send out.</p>
+      </div>
+      <div class="biz-card">
+        <span class="biz-tag" data-i18n="biz2.tag">In kind</span>
+        <h3 data-i18n="biz2.name">Materials desk</h3>
+        <p data-i18n="biz2.desc">Stone, lime, timber, ironmongery, paint, solar panels, fencing — delivered against an actual shopping list from the Friends.</p>
+      </div>
+      <div class="biz-card">
+        <span class="biz-tag" data-i18n="biz3.tag">In kind</span>
+        <h3 data-i18n="biz3.name">A trade day</h3>
+        <p data-i18n="biz3.desc">One day from a contractor who's already working in George. Billed or donated, whichever works for you.</p>
+      </div>
+      <div class="biz-card">
+        <span class="biz-tag" data-i18n="biz4.tag">Spend</span>
+        <h3 data-i18n="biz4.name">Book the venue</h3>
+        <p data-i18n="biz4.desc">Bring your team up for an outing or a small function. Your spend becomes their operating income.</p>
+      </div>
+      <div class="biz-card">
+        <span class="biz-tag" data-i18n="biz5.tag">Network</span>
+        <h3 data-i18n="biz5.name">Make an introduction</h3>
+        <p data-i18n="biz5.desc">Walk a client or investor up the Pass. On this coast, heritage is half of why people decide to stay.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="kicker"><span class="num mono">07</span><h2 class="title" data-i18n="s07.kicker">How you can leave a legacy</h2></div>
+    <p class="max-p" data-i18n="s07.p">A building like this doesn't need one big hero — it needs a long list of ordinary people who decided it mattered to them. Put your name on a bench here and it outlasts you by a century, easily; the stone isn't going anywhere. A small monthly gift adds up more, over the years, than one generous cheque that never comes again. Either way, something with your name on it stays on that mountain long after you're gone.</p>
+    <div class="ticket-row">
+      <div class="ticket">
+        <span class="name" data-i18n="tk1.name">Friend</span>
+        <span class="amt">R250 – R1,000</span>
+        <div class="perf"></div>
+        <p data-i18n="tk1.desc">Once-off or monthly. Keeps the coffee shift running and pays for the small, constant repairs.</p>
+      </div>
+      <div class="ticket">
+        <span class="name" data-i18n="tk2.name">Keeper</span>
+        <span class="amt">R1,000 – R5,000</span>
+        <div class="perf"></div>
+        <p data-i18n="tk2.desc">Your name goes on the Friends' thank-you list, and you're invited out for a walkabout of the house.</p>
+      </div>
+      <div class="ticket">
+        <span class="name" data-i18n="tk3.name">Pass Patron</span>
+        <span class="amt">R5,000 – R25,000</span>
+        <div class="perf"></div>
+        <p data-i18n="tk3.desc">Real recognition — and the option to put your name on a bench, a tool, or a marker along the trail.</p>
+      </div>
+      <div class="ticket">
+        <span class="name" data-i18n="tk4.name">Foundation Gift</span>
+        <span class="amt">R25,000+</span>
+        <div class="perf"></div>
+        <p data-i18n="tk4.desc">Worth a proper conversation with the Friends about backing a specific project, start to finish.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="kicker"><span class="num mono">08</span><h2 class="title" data-i18n="s08.kicker">How they say thank you</h2></div>
+    <p class="max-p" data-i18n="s08.p">Nothing plastic gets bolted onto 1840s stone without the Friends agreeing to it first — but there's real, lasting recognition on offer for those who want it:</p>
+    <ul class="recog-list">
+      <li data-i18n="rec1">A place on the timber donor board at the house.</li>
+      <li data-i18n="rec2">A mention in what Signatura sends out about this drive.</li>
+      <li data-i18n="rec3">A thank-you on social media or by email, if that's what you'd like.</li>
+      <li data-i18n="rec4">A quiet morning at the house, just for you and whoever you bring.</li>
+      <li data-i18n="rec5">Your name on something new and reversible — a bench, a wagon wheel, a trail post.</li>
+    </ul>
+    <div class="note-box" data-i18n="note1">If a Section 18A tax certificate matters to you, that depends entirely on the Friends' own NPO and SARS registration — ask them directly before you promise a colleague a deduction. Signatura can't issue a tax receipt for money given to the Friends.</div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="kicker"><span class="num mono">09</span><h2 class="title" data-i18n="s09.kicker">How to get involved</h2></div>
+    <ol class="steps">
+      <li><p data-i18n="step1">Read this, then go and look properly — oldtollhouse.co.za, or the Facebook page "The Old Toll House Montagu Pass."</p></li>
+      <li><p data-i18n="step2">If you can, drive the Pass on a Saturday or Sunday — hours have been 09:00 to 15:00, but call ahead — and see the place for yourself.</p></li>
+      <li><p data-i18n="step3">Work out what you can actually offer: cash, a monthly debit, materials, a day of your trade, or just an introduction to someone who can.</p></li>
+      <li><p data-i18n="step4">Signatura puts you in touch with the Friends directly — ask for Gerda Stols — so whatever you give goes straight to the people doing the work.</p></li>
+      <li><p data-i18n="step5">Only ever pay into banking details the Friends confirm with you at the time. If an old flyer has a bank account on it, treat it as out of date until they tell you otherwise.</p></li>
+    </ol>
+    <figure class="road-figure">
+      <img src="images/road.jpg" data-i18n-alt="road.alt" alt="The dirt road climbing Montagu Pass toward the mountains" style="object-position:center 30%;">
+      <span class="cap mono" data-i18n="road.cap">The road up Montagu Pass</span>
+    </figure>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="kicker"><span class="num mono">10</span><h2 class="title" data-i18n="s10.kicker">Get in touch</h2></div>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <h3 data-i18n="c1.h">Friends of the Old Toll House</h3>
+        <div class="row"><svg viewBox="0 0 20 20" fill="none"><path d="M10 2a5 5 0 00-5 5c0 4.5 5 11 5 11s5-6.5 5-11a5 5 0 00-5-5z" stroke="currentColor" stroke-width="1.6"/><circle cx="10" cy="7" r="1.8" stroke="currentColor" stroke-width="1.6"/></svg><span data-i18n="c1.addr">Gerda Stols · Malgaekraal farm, N9, George</span></div>
+        <div class="row"><svg viewBox="0 0 20 20" fill="none"><path d="M4 5l6 5 6-5" stroke="currentColor" stroke-width="1.6"/><rect x="3" y="4" width="14" height="12" rx="1.5" stroke="currentColor" stroke-width="1.6"/></svg><span><a href="mailto:info@oldtollhouse.co.za">info@oldtollhouse.co.za</a></span></div>
+        <div class="row"><svg viewBox="0 0 20 20" fill="none"><path d="M5 3l2.5 1 -1 2.5c.7 1.6 2 2.9 3.6 3.6l2.5-1 1 2.5c-.4 1-1.3 2-2.4 2C7.8 13.6 6.4 12.2 4.5 10 3.3 8.6 2.4 6.7 5 3z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg><span><a href="tel:0837728252">083 772 8252</a></span></div>
+        <div class="row"><svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.6"/><path d="M3 10h14M10 3c2 2 2 12 0 14M10 3c-2 2-2 12 0 14" stroke="currentColor" stroke-width="1.3"/></svg><span><a href="https://www.oldtollhouse.co.za" target="_blank" rel="noopener">oldtollhouse.co.za</a> <span data-i18n="c1.hours">· Open Saturdays &amp; Sundays, 09:00–15:00</span></span></div>
+        <div class="cta-row">
+          <a class="btn-alt" href="tel:0837728252" data-i18n="btn.call">Call</a>
+          <a class="btn-alt" href="https://wa.me/27837728252" target="_blank" rel="noopener">WhatsApp</a>
+          <a class="btn-alt" href="mailto:info@oldtollhouse.co.za" data-i18n="btn.email">Email</a>
+        </div>
+      </div>
+      <div class="contact-card">
+        <h3 data-i18n="c2.h">Signatura — this drive</h3>
+        <div class="row"><svg viewBox="0 0 20 20" fill="none"><path d="M10 2a5 5 0 00-5 5c0 4.5 5 11 5 11s5-6.5 5-11a5 5 0 00-5-5z" stroke="currentColor" stroke-width="1.6"/><circle cx="10" cy="7" r="1.8" stroke="currentColor" stroke-width="1.6"/></svg><span data-i18n="c2.l1">Working the Garden Route and the wider Western Cape.</span></div>
+        <div class="row"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l4 4 8-9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="c2.l2">Bring this page to the people you know — owners, tenants, investors.</span></div>
+        <div class="row"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l4 4 8-9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="c2.l3">Or just ask us to set up a visit to the house.</span></div>
+        <div class="cta-row">
+          <a class="btn-alt" href="tel:0837728252" data-i18n="c2.btn">Ask for an introduction</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="disclaimer wrap">
+  <p data-i18n="disc1"><strong>A plain word on all of this:</strong> nothing here is a formal prospectus, a share offer, or a promise that your money comes back to you. Nobody's offering you a stake in a mountain pass. What "investing in a landmark" means, in this case, is exactly what it sounds like — giving money, materials or time so a public building stays standing. You don't end up owning any part of it, and that's the point.</p>
+  <p data-i18n="disc2">The Rand figures above are a starting point for conversation, not an audited budget. Before you pay anything, confirm the current banking details, the NPO number, and the tax status directly with the Friends of the Old Toll House.</p>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="closing" data-i18n="footer.closing">A pass without its toll house is just a road. Help keep the oldest story on Montagu Pass open — and leave your own name somewhere on it.</div>
+    <div class="credit" data-i18n="footer.credit">PUT TOGETHER WITH THE FRIENDS OF THE OLD TOLL HOUSE AND SIGNATURA · SEPTEMBER 2026 · OLDTOLLHOUSE.CO.ZA</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var T = {
+    en: {
+      "brand":"Friends of the Old Toll House",
+      "docTitle":"Friends of the Old Toll House",
+      "nav.call":"Call",
+      "nav.cta":"How to help",
+      "hero.eyebrow":"MONTAGU PASS · GEORGE",
+      "hero.h1":"A pass without its toll house is just a road.",
+      "hero.p":"This little stone building has been collecting stories since the 1840s — first tolls, then fires, then decades of being quietly forgotten. A handful of volunteers refuse to let it go. Here's how your business or your name can become part of what happens next.",
+      "hero.cta1":"See how to help",
+      "hero.cta2":"Get in touch",
+      "hero.alt":"The restored Old Toll House, its stone walls glowing under the Outeniqua Mountains",
+      "welcome.p":"Signatura put this page together for the Friends of the Old Toll House — the small, stubborn group who've been patching this roof, chasing thieves off the property, and pouring pancake batter to keep the lights on. This isn't an investment pitch, and nobody's offering shares in a mountain pass. It's simpler than that: a building that matters needs people who'll show up for it. For a business, that can mean putting your name behind something you can point to and say — I helped fix that roof. For a person, it can mean a bench with your family's name on it, still standing on this mountain long after you are. Either way, we're asking you to be one of the people who showed up.",
+      "watch.kicker":"See it from above",
+      "watch.p":"A short flight over the Pass and the house itself — the stone, the roofline, the mountains it's been sitting under since the 1840s.",
+      "s01.kicker":"The landmark",
+      "s01.p1":"The Old Toll House stands near the foot of Montagu Pass, about two kilometres short of the modern Outeniqua Pass. It went up in the mid-1840s alongside the pass itself — engineered by Henry Fancourt White, opened in the late 1840s — and for decades it was where farmers, transport riders and postal carts stopped to pay their way through the mountain.",
+      "s01.p2":"The walls are indigenous sandstone, nearly 700mm thick, wrapped around a footprint barely bigger than a large garage — about 16.3 by 6 metres. It doesn't look like much from the road. Stand next to it, with the Outeniquas rising behind, and it's hard not to feel how long it's been standing there. Montagu Pass is often called the oldest unaltered mountain pass still in use in South Africa. This little building is what's left of the people who built it.",
+      "tl1.date":"c. 1844–1847","tl1.text":"Raised in stone alongside the pass, as home to the toll keeper and his family.",
+      "tl2.date":"1855","tl2.text":"Fire takes the original thatch roof. It's rebuilt under corrugated iron and keeps going.",
+      "tl3.date":"1972","tl3.text":"Declared a National Monument, together with the pass it once guarded.",
+      "tl4.date":"Today","tl4.text":"Kept alive by volunteers, after years of neglect, theft, and a second fire that nearly finished the job.",
+      "s02.kicker":"Two fires, and it's still standing",
+      "s02.p":"This house has burned twice. It's had its yellowwood beams stolen, its doors stripped, its Oregon pine floors carried off piece by piece. Each time, somebody who loved it came back with tools and started again. That's the whole history of this place, really — not grand, just relentless.",
+      "fire.alt":"The toll house after a structural fire, roof and windows burnt out",
+      "fire.cap":"After the fire",
+      "restored.alt":"The same toll house restored, with a new roof and secure stonework",
+      "restored.cap":"Standing again, today",
+      "s03.kicker":"Why it matters now",
+      "s03.p1":"George and the Garden Route sell people a story about landscape, craft, and things built to last. The Toll House is that story, in stone — proof of how this region was opened up, taxed, and travelled, long before anyone called it a tourist route. On a good weekend it's a living museum, a coffee stop, a small wedding venue, a reason to pull over on the way up the Pass.",
+      "s03.p2":"Leave a monument like this without support for long enough and the mountain takes it back — damp in the walls, a door pried open, another storm through a roof nobody could afford to fix. That's not a footnote in a tourism brochure. That's George losing a piece of itself, one closed gate at a time.",
+      "s04.kicker":"What the Friends have already done",
+      "s04.p":"Friends of the Old Toll House started with one person, Gerda Stols, who decided this building wasn't going to disappear on her watch. Since then, volunteers have fitted security gates, patched roofs, rebuilt interiors by hand, and filled the house with furniture and photographs that local families simply gave away. They've kept the doors open on weekends even when floods closed the Pass and nobody was driving up to see them. What they're holding together, week to week:",
+      "cl1":"Keeping the monument weather-tight, secure, and open to the public.",
+      "cl2":"Finishing the museum inside, room by room, so the house can keep teaching people its own history.",
+      "cl3":"Funding the day-to-day — <b>pancakes, coffee, small events</b> — because that's what actually pays for someone to be here.",
+      "cl4":"Building the camping ground and ox-wagon stay they've been planning, as a real, heritage-true source of income.",
+      "cl5":"Improving the paths, the gardens, the signage, the Biblical Trail — carefully, without turning the stone into a stage set.",
+      "cl6":"Setting aside a reserve, so the next storm, theft, or closed-pass season doesn't shut the doors for good.",
+      "interior.alt":"Inside the toll house museum, with donated furniture, portraits and lace hanging from the stone walls",
+      "interior.cap":"Inside the museum-café — almost everything on these walls was somebody's gift.",
+      "s05.kicker":"Where your support goes",
+      "s05.p":"The numbers below are a starting point for a conversation, not a fixed price list — the final call on how money gets spent always sits with the Friends themselves. Signatura's part is to introduce people and help say thank you properly; we don't hold anyone's money unless that's agreed on paper first.",
+      "tbl.h1":"Priority","tbl.h2":"Indicative band","tbl.h3":"What it covers",
+      "row1.p":"Immediate fabric","row1.d":"Roof, joinery, security, damp-proofing, rewiring, fire readiness — the unglamorous work that keeps the building standing.",
+      "row2.p":"Museum & trail","row2.d":"Display cases, trail markers, printed history, somewhere to sit and take it all in.",
+      "row3.p":"Hospitality kit","row3.d":"Kitchen equipment, furniture, umbrellas, signage — the small things that let the coffee shop pay for itself.",
+      "row4.p":"Camping / ox-wagon","row4.d":"Site works, services, and real ox-wagon units — a future income line, built the slow way.",
+      "row5.p":"Operating reserve","row5.d":"Rates, insurance, fuel, and a cushion for the season the Pass floods and closes.",
+      "row6.p":"Skills in kind","row6.band":"Value as given","row6.d":"Stone masons, carpenters, electricians, accountants, designers, caterers, security — whatever you're good at, they can probably use it.",
+      "wagon.alt":"A handbuilt ox-wagon model on display, a preview of the planned ox-wagon accommodation",
+      "wagon.cap":"A hand-built model of the ox-wagon stay they're hoping to build.",
+      "s06.kicker":"How a business can make a real difference",
+      "s06.p":"Every pledge here has a name attached to it and a job it pays for — a roof that stops leaking, a gate that keeps thieves out, a season the doors stay open when they might have closed. This is the kind of giving you can drive past and point to.",
+      "biz1.tag":"Recurring","biz1.name":"Patron business","biz1.desc":"A yearly pledge — R5,000 to R50,000 is a good range to start from — with your name on a board at the house and in what the Friends send out.",
+      "biz2.tag":"In kind","biz2.name":"Materials desk","biz2.desc":"Stone, lime, timber, ironmongery, paint, solar panels, fencing — delivered against an actual shopping list from the Friends.",
+      "biz3.tag":"In kind","biz3.name":"A trade day","biz3.desc":"One day from a contractor who's already working in George. Billed or donated, whichever works for you.",
+      "biz4.tag":"Spend","biz4.name":"Book the venue","biz4.desc":"Bring your team up for an outing or a small function. Your spend becomes their operating income.",
+      "biz5.tag":"Network","biz5.name":"Make an introduction","biz5.desc":"Walk a client or investor up the Pass. On this coast, heritage is half of why people decide to stay.",
+      "s07.kicker":"How you can leave a legacy",
+      "s07.p":"A building like this doesn't need one big hero — it needs a long list of ordinary people who decided it mattered to them. Put your name on a bench here and it outlasts you by a century, easily; the stone isn't going anywhere. A small monthly gift adds up more, over the years, than one generous cheque that never comes again. Either way, something with your name on it stays on that mountain long after you're gone.",
+      "tk1.name":"Friend","tk1.desc":"Once-off or monthly. Keeps the coffee shift running and pays for the small, constant repairs.",
+      "tk2.name":"Keeper","tk2.desc":"Your name goes on the Friends' thank-you list, and you're invited out for a walkabout of the house.",
+      "tk3.name":"Pass Patron","tk3.desc":"Real recognition — and the option to put your name on a bench, a tool, or a marker along the trail.",
+      "tk4.name":"Foundation Gift","tk4.desc":"Worth a proper conversation with the Friends about backing a specific project, start to finish.",
+      "s08.kicker":"How they say thank you",
+      "s08.p":"Nothing plastic gets bolted onto 1840s stone without the Friends agreeing to it first — but there's real, lasting recognition on offer for those who want it:",
+      "rec1":"A place on the timber donor board at the house.",
+      "rec2":"A mention in what Signatura sends out about this drive.",
+      "rec3":"A thank-you on social media or by email, if that's what you'd like.",
+      "rec4":"A quiet morning at the house, just for you and whoever you bring.",
+      "rec5":"Your name on something new and reversible — a bench, a wagon wheel, a trail post.",
+      "note1":"If a Section 18A tax certificate matters to you, that depends entirely on the Friends' own NPO and SARS registration — ask them directly before you promise a colleague a deduction. Signatura can't issue a tax receipt for money given to the Friends.",
+      "s09.kicker":"How to get involved",
+      "step1":"Read this, then go and look properly — oldtollhouse.co.za, or the Facebook page \"The Old Toll House Montagu Pass.\"",
+      "step2":"If you can, drive the Pass on a Saturday or Sunday — hours have been 09:00 to 15:00, but call ahead — and see the place for yourself.",
+      "step3":"Work out what you can actually offer: cash, a monthly debit, materials, a day of your trade, or just an introduction to someone who can.",
+      "step4":"Signatura puts you in touch with the Friends directly — ask for Gerda Stols — so whatever you give goes straight to the people doing the work.",
+      "step5":"Only ever pay into banking details the Friends confirm with you at the time. If an old flyer has a bank account on it, treat it as out of date until they tell you otherwise.",
+      "road.alt":"The dirt road climbing Montagu Pass toward the mountains",
+      "road.cap":"The road up Montagu Pass",
+      "s10.kicker":"Get in touch",
+      "c1.h":"Friends of the Old Toll House",
+      "c1.addr":"Gerda Stols · Malgaekraal farm, N9, George",
+      "c1.hours":"· Open Saturdays &amp; Sundays, 09:00–15:00",
+      "btn.call":"Call","btn.email":"Email",
+      "c2.h":"Signatura — this drive",
+      "c2.l1":"Working the Garden Route and the wider Western Cape.",
+      "c2.l2":"Bring this page to the people you know — owners, tenants, investors.",
+      "c2.l3":"Or just ask us to set up a visit to the house.",
+      "c2.btn":"Ask for an introduction",
+      "disc1":"<strong>A plain word on all of this:</strong> nothing here is a formal prospectus, a share offer, or a promise that your money comes back to you. Nobody's offering you a stake in a mountain pass. What \"investing in a landmark\" means, in this case, is exactly what it sounds like — giving money, materials or time so a public building stays standing. You don't end up owning any part of it, and that's the point.",
+      "disc2":"The Rand figures above are a starting point for conversation, not an audited budget. Before you pay anything, confirm the current banking details, the NPO number, and the tax status directly with the Friends of the Old Toll House.",
+      "footer.closing":"A pass without its toll house is just a road. Help keep the oldest story on Montagu Pass open — and leave your own name somewhere on it.",
+      "footer.credit":"PUT TOGETHER WITH THE FRIENDS OF THE OLD TOLL HOUSE AND SIGNATURA · SEPTEMBER 2026 · OLDTOLLHOUSE.CO.ZA"
+    },
+    af: {
+      "brand":"Vriende van die Ou Tolhuis",
+      "docTitle":"Vriende van die Ou Tolhuis",
+      "nav.call":"Bel",
+      "nav.cta":"Hoe om te help",
+      "hero.eyebrow":"MONTAGU-PAS · GEORGE",
+      "hero.h1":"'n Pas sonder sy tolhuis is maar net 'n pad.",
+      "hero.p":"Hierdie klein klipgeboutjie versamel al sedert die 1840's stories — eers tol, toe vure, toe jare van stil vergeet-word. 'n Handjievol vrywilligers weier om dit te laat gaan. Hier's hoe jou besigheid, of jou naam, deel kan word van wat volgende gebeur.",
+      "hero.cta1":"Kyk hoe jy kan help",
+      "hero.cta2":"Kontak ons",
+      "hero.alt":"Die herstelde Ou Tolhuis, met klipmure wat goud kleur onder die Outeniekwaberge",
+      "welcome.p":"Signatura het hierdie bladsy vir die Vriende van die Ou Tolhuis saamgestel — die klein, koppige groepie wat die dak lap, diewe van die eiendom afjaag, en pannekoekbeslag roer om die liggies aan te hou. Dit is nie 'n beleggingsaanbod nie, en niemand verkoop aandele in 'n bergpas nie. Dis eenvoudiger as dit: 'n gebou wat saak maak, het mense nodig wat sal opdaag daarvoor. Vir 'n besigheid kan dit beteken jy sit jou naam agter iets waarna jy kan wys en sê — ek het gehelp om daardie dak reg te maak. Vir 'n mens kan dit 'n bank met jou gesin se naam op wees, wat nog op hierdie berg sal staan lank nadat jy weg is. Op enige manier vra ons jou om een van die mense te wees wat opgedaag het.",
+      "watch.kicker":"Kyk dit uit die lug",
+      "watch.p":"'n Kort vlug oor die pas en die huis self — die klip, die dakrand, die berge waaronder dit al sedert die 1840's sit.",
+      "s01.kicker":"Die landmerk",
+      "s01.p1":"Die Ou Tolhuis staan naby die onderpunt van die Montagu-pas, so twee kilometer voor die moderne Outeniekwapas. Dit is in die middel-1840's saam met die pas self opgerig — ontwerp deur Henry Fancourt White, in die laat 1840's geopen — en vir dekades was dit waar boere, vervoerryers en poswaens gestop het om hul pad deur die berg te betaal.",
+      "s01.p2":"Die mure is inheemse sandsteen, byna 700mm dik, om 'n voetspoor wat skaars groter as 'n groot garage is — omtrent 16.3 by 6 meter. Van die pad af lyk dit na nie veel nie. Staan langs hom, met die Outeniekwas wat agter opstaan, en dit is moeilik om nié te voel hoe lank hy al daar staan nie. Die Montagu-pas word dikwels die oudste onveranderde bergpas genoem wat nog in Suid-Afrika gebruik word. Hierdie klein geboutjie is al wat oorbly van die mense wat dit gebou het.",
+      "tl1.date":"c. 1844–1847","tl1.text":"Opgerig in klip, saam met die pas, as tuiste vir die tolwagter en sy gesin.",
+      "tl2.date":"1855","tl2.text":"Vuur vreet die oorspronklike grasdak. Dit word onder sinkplaat herbou en gaan aan.",
+      "tl3.date":"1972","tl3.text":"Verklaar 'n Nasionale Gedenkwaardigheid, saam met die pas wat dit eens bewaak het.",
+      "tl4.date":"Vandag","tl4.text":"Aan die lewe gehou deur vrywilligers, na jare van verwaarlosing, diefstal, en 'n tweede vuur wat dit byna klaargemaak het.",
+      "s02.kicker":"Twee brande, en die huis staan nog",
+      "s02.p":"Hierdie huis het twee keer gebrand. Sy geelhoutbalke is gesteel, sy deure gestroop, sy Oregondennevloere stuk-stuk weggedra. Elke keer het iemand wat omgegee het, teruggekom met gereedskap en van voor af begin. Dis eintlik die hele geskiedenis van hierdie plek — nie groots nie, net onverbiddelik volhardend.",
+      "fire.alt":"Die tolhuis na 'n strukturele brand, dak en vensters uitgebrand",
+      "fire.cap":"Na die brand",
+      "restored.alt":"Dieselfde tolhuis herstel, met 'n nuwe dak en veilige klipwerk",
+      "restored.cap":"Staan weer, vandag",
+      "s03.kicker":"Waarom dit nou saak maak",
+      "s03.p1":"George en die Tuinroete verkoop mense 'n storie oor landskap, ambag, en dinge wat gebou is om te hou. Die Tolhuis is daardie storie, in klip — bewys van hoe hierdie streek oopgemaak, belas en deurgereis is, lank voordat enigiemand dit 'n toeristeroete genoem het. Op 'n goeie naweek is dit 'n lewende museum, 'n koffiestop, 'n klein troue-plek, 'n rede om by die pas se voet stil te hou.",
+      "s03.p2":"Los 'n gedenkwaardigheid soos hierdie lank genoeg sonder steun, en die berg vat hom terug — vog in die mure, 'n deur wat oopgebreek word, nog 'n storm deur 'n dak wat niemand kon bekostig om reg te maak nie. Dis nie 'n voetnota in 'n toerisme-brosjure nie. Dis George wat, een toe hek op 'n slag, 'n stuk van homself verloor.",
+      "s04.kicker":"Wat die Vriende reeds vermag het",
+      "s04.p":"Vriende van die Ou Tolhuis het met een mens begin, Gerda Stols, wat besluit het hierdie gebou gaan nie op haar wag verdwyn nie. Sedertdien het vrywilligers veiligheidshekke ingesit, dakke gelap, die binnekant met die hand herbou, en die huis gevul met meubels en foto's wat plaaslike gesinne net so weggegee het. Hulle het die deure oop gehou selfs toe vloede die pas gesluit het en niemand opgery het om hulle te sien nie. Wat hulle week na week aan die gang hou:",
+      "cl1":"Die gedenkwaardigheid winddig, veilig en oop vir die publiek hou.",
+      "cl2":"Die museum binne klaarmaak, kamer vir kamer, sodat die huis sy eie geskiedenis kan bly leer.",
+      "cl3":"Die daaglikse dinge befonds — <b>pannekoek, koffie, klein geleenthede</b> — want dis wat werklik betaal dat iemand hier kan wees.",
+      "cl4":"Die kampeerterrein en ossewa-verblyf bou wat hulle al lank beplan, as 'n regte, erfenis-getroue inkomstebron.",
+      "cl5":"Die paaie, tuine, wegwysers, die Bybelse Roete verbeter — versigtig, sonder om die klip in 'n verhoog te verander.",
+      "cl6":"'n Reserwe opsy sit, sodat die volgende storm, diefstal of geslote-pas-seisoen nie weer die deure vir goed sluit nie.",
+      "interior.alt":"Binne die tolhuis-museum, met geskenkte meubels, portrette en kant teen die klipmure",
+      "interior.cap":"Binne die museum-kafee — byna alles teen hierdie mure was iemand se geskenk.",
+      "s05.kicker":"Waarheen jou bydrae gaan",
+      "s05.p":"Die syfers hieronder is 'n beginpunt vir 'n gesprek, nie 'n vaste pryslys nie — die finale besluit oor hoe geld bestee word, bly altyd by die Vriende self. Signatura se deel is om mense bekend te stel en behoorlik dankie te sê; ons hou nie iemand se geld nie, tensy dit eers op skrif ooreengekom is.",
+      "tbl.h1":"Prioriteit","tbl.h2":"Aanduidende band","tbl.h3":"Wat dit dek",
+      "row1.p":"Onmiddellike herstelwerk","row1.d":"Dak, skrynwerk, sekuriteit, vogdigting, elektriese bedrading, brandgereedheid — die onopvallende werk wat die gebou aan die staan hou.",
+      "row2.p":"Museum & roete","row2.d":"Vertoonkaste, roetewysers, gedrukte geskiedenis, en 'n plek om te sit en dit alles in te neem.",
+      "row3.p":"Gasvryheidstoerusting","row3.d":"Kombuistoerusting, meubels, sambrele, wegwysers — die klein dingetjies wat die koffiewinkel vir homself laat betaal.",
+      "row4.p":"Kampering / ossewa","row4.d":"Terreinwerk, dienste, en regte ossewaeenhede — 'n toekomstige inkomstebron, stadig en reg gebou.",
+      "row5.p":"Bedryfsreserwe","row5.d":"Erfbelasting, versekering, brandstof, en 'n kussing vir die seisoen wanneer die pas oorstroom en sluit.",
+      "row6.p":"Vaardighede in natura","row6.band":"Waarde soos gegee","row6.d":"Klipwerkers, skrynwerkers, elektrisiens, rekenmeesters, ontwerpers, cateraars, sekuriteit — wat ook al jy goed in is, hulle kan dit waarskynlik gebruik.",
+      "wagon.alt":"'n Handgeboude ossewamodel op vertoon, 'n voorskou van die beplande verblyf",
+      "wagon.cap":"'n Met die hand geboude model van die ossewa-verblyf wat hulle hoop om te bou.",
+      "s06.kicker":"Hoe 'n besigheid 'n werklike verskil kan maak",
+      "s06.p":"Elke toesegging hier het 'n naam daaraan gekoppel en 'n taak wat dit betaal — 'n dak wat ophou lek, 'n hek wat diewe buite hou, 'n seisoen wat die deure oopbly wanneer hulle andersins sou gesluit het. Dis die soort gee waarverby jy kan ry en met jou vinger kan wys.",
+      "biz1.tag":"Herhalend","biz1.name":"Patroon-besigheid","biz1.desc":"'n Jaarlikse toesegging — R5,000 tot R50,000 is 'n goeie beginpunt — met jou naam op 'n bord by die huis en in wat die Vriende uitstuur.",
+      "biz2.tag":"In natura","biz2.name":"Materiaaltoonbank","biz2.desc":"Klip, kalk, hout, ystersmidware, verf, sonpanele, heinings — afgelewer teen 'n regte inkopielys van die Vriende.",
+      "biz3.tag":"In natura","biz3.name":"'n Vakdag","biz3.desc":"Een dag van 'n kontrakteur wat reeds in George werk. Gefaktureer of geskenk, wat ook al vir jou werk.",
+      "biz4.tag":"Besteding","biz4.name":"Bespreek die perseel","biz4.desc":"Bring jou span vir 'n uitstappie of klein funksie. Jou besteding word hulle bedryfsinkomste.",
+      "biz5.tag":"Netwerk","biz5.name":"Stel iemand bekend","biz5.desc":"Vat 'n kliënt of belegger die pas op. Op hierdie kus is erfenis die helfte van waarom mense besluit om te bly.",
+      "s07.kicker":"Hoe jy 'n nalatenskap kan laat",
+      "s07.p":"'n Gebou soos hierdie het nie een groot held nodig nie — dit het 'n lang lys gewone mense nodig wat besluit het dit maak vir hulle saak. Sit jou naam op 'n bank hier, en dit oorleef jou maklik met 'n eeu; die klip gaan nêrens heen nie. 'n Klein maandelikse geskenk tel oor die jare meer op as een vrygewige tjek wat nooit weer kom nie. Op enige manier bly iets met jou naam daarop op daardie berg, lank nadat jy weg is.",
+      "tk1.name":"Vriend","tk1.desc":"Eenmalig of maandeliks. Hou die koffie-skof aan die gang en betaal vir die klein, gedurige herstelwerk.",
+      "tk2.name":"Bewaarder","tk2.desc":"Jou naam kom op die Vriende se dankie-lys, en jy word genooi vir 'n staptoer deur die huis.",
+      "tk3.name":"Pas-beskermheer","tk3.desc":"Regte erkenning — en die keuse om jou naam op 'n bank, 'n stuk gereedskap, of 'n roetewyser te sit.",
+      "tk4.name":"Stigtingskenking","tk4.desc":"Die moeite werd van 'n regte gesprek met die Vriende oor die borg van 'n spesifieke projek, van begin tot einde.",
+      "s08.kicker":"Hoe hulle dankie sê",
+      "s08.p":"Niks plastieks word aan 1840's-klip vasgeskroef sonder dat die Vriende eers instem nie — maar daar is regte, blywende erkenning beskikbaar vir dié wat dit wil hê:",
+      "rec1":"'n Plek op die houtdonateursbord by die huis.",
+      "rec2":"'n Vermelding in wat Signatura oor hierdie veldtog uitstuur.",
+      "rec3":"'n Dankie op sosiale media of per e-pos, as jy dit so verkies.",
+      "rec4":"'n Stil oggend by die huis, net vir jou en wie jy ook al saambring.",
+      "rec5":"Jou naam op iets nuuts en omkeerbaars — 'n bank, 'n wawiel, 'n roetepaal.",
+      "note1":"As 'n Artikel 18A-belastingsertifikaat vir jou saak maak, hang dit heeltemal af van die Vriende se eie NPO- en SAID-registrasie — vra hulle direk voor jy 'n kollega 'n aftrekking belowe. Signatura kan nie 'n belastingkwitansie uitreik vir geld wat aan die Vriende gegee word nie.",
+      "s09.kicker":"Hoe om betrokke te raak",
+      "step1":"Lees dit, en gaan kyk dan self behoorlik — oldtollhouse.co.za, of die Facebook-blad \"The Old Toll House Montagu Pass\".",
+      "step2":"Ry, as jy kan, Saterdag of Sondag deur die pas — ure was gewoonlik 09:00 tot 15:00, maar bel eers — en sien die plek met jou eie oë.",
+      "step3":"Dink uit wat jy werklik kan bied: kontant, 'n maandelikse debiet, materiaal, 'n dag se vakwerk, of net 'n bekendstelling aan iemand wat kan.",
+      "step4":"Signatura stel jou direk aan die Vriende voor — vra vir Gerda Stols — sodat wat jy ook al gee, reguit by die mense uitkom wat die werk doen.",
+      "step5":"Betaal net in bankbesonderhede wat die Vriende self met jou bevestig, op die dag self. As 'n ou pamflet 'n bankrekening daarop het, behandel dit as verouderd totdat hulle jou anders vertel.",
+      "road.alt":"Die grondpad wat teen die Montagu-pas opklim na die berge",
+      "road.cap":"Die pad op teen die Montagu-pas",
+      "s10.kicker":"Kom praat met ons",
+      "c1.h":"Vriende van die Ou Tolhuis",
+      "c1.addr":"Gerda Stols · Malgaekraal-plaas, N9, George",
+      "c1.hours":"· Oop Saterdae &amp; Sondae, 09:00–15:00",
+      "btn.call":"Bel","btn.email":"Epos",
+      "c2.h":"Signatura — hierdie veldtog",
+      "c2.l1":"Werk regoor die Tuinroete en die wyer Wes-Kaap.",
+      "c2.l2":"Bring hierdie bladsy na die mense wat jy ken — eienaars, huurders, beleggers.",
+      "c2.l3":"Of vra ons net om 'n besoek aan die huis te reël.",
+      "c2.btn":"Vra vir 'n bekendstelling",
+      "disc1":"<strong>'n Eerlike woord hieroor:</strong> niks hier is 'n formele prospektus, aandele-aanbod, of 'n belofte dat jou geld na jou toe terugkom nie. Niemand bied jou 'n aandeel in 'n bergpas aan nie. Wat \"belê in 'n landmerk\" in hierdie geval beteken, is presies wat dit klink — geld, materiaal of tyd gee sodat 'n openbare gebou bly staan. Jy eindig nie met enige deel van die eiendom nie, en dis presies die punt.",
+      "disc2":"Die Rand-syfers hierbo is 'n beginpunt vir gesprek, nie 'n geouditeerde begroting nie. Bevestig, voor jy enigiets betaal, die huidige bankbesonderhede, NPO-nommer en belastingstatus direk met die Vriende van die Ou Tolhuis.",
+      "footer.closing":"'n Pas sonder sy tolhuis is maar net 'n pad. Help om die oudste storie op die Montagu-pas oop te hou — en laat jou eie naam iewers daarop agter.",
+      "footer.credit":"SAAMGESTEL MET DIE VRIENDE VAN DIE OU TOLHUIS EN SIGNATURA · SEPTEMBER 2026 · OLDTOLLHOUSE.CO.ZA"
+    }
+  };
+
+  function applyLang(lang){
+    var dict = T[lang] || T.en;
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+      var key = el.getAttribute('data-i18n');
+      if(dict[key] !== undefined){ el.innerHTML = dict[key]; }
+    });
+    document.querySelectorAll('[data-i18n-alt]').forEach(function(el){
+      var key = el.getAttribute('data-i18n-alt');
+      if(dict[key] !== undefined){ el.setAttribute('alt', dict[key]); }
+    });
+    document.documentElement.setAttribute('lang', lang);
+    if(dict.docTitle){ document.title = dict.docTitle; }
+    var enBtn = document.getElementById('btn-en');
+    var afBtn = document.getElementById('btn-af');
+    if(enBtn && afBtn){
+      enBtn.classList.toggle('active', lang === 'en');
+      afBtn.classList.toggle('active', lang === 'af');
+    }
+    try{ localStorage.setItem('tollhouse-lang', lang); }catch(e){}
+  }
+
+  window.setLang = applyLang;
+
+  var initial = 'en';
+  try{
+    var saved = localStorage.getItem('tollhouse-lang');
+    if(saved === 'en' || saved === 'af'){ initial = saved; }
+  }catch(e){}
+  applyLang(initial);
+})();
+</script>
