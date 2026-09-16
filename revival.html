@@ -1,0 +1,860 @@
+<title>Old Toll House Revival</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rye&family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Special+Elite&display=swap">
+<style>
+  :root{
+    --paper:#EFE0BE;
+    --paper-deep:#E4D1A4;
+    --card:#F8EDD2;
+    --ink:#2B1D10;
+    --ink-soft:#5A4527;
+    --ink-faint:#8A7550;
+    --rust:#A63626;
+    --rust-deep:#7C2818;
+    --rust-soft:#E9C3B4;
+    --teal:#2F6B63;
+    --teal-deep:#1F4B45;
+    --teal-soft:#CFE0DA;
+    --mustard:#C98A28;
+    --mustard-deep:#8F5F16;
+    --line:#CBB27E;
+    --cream-ink:#F7ECD2;
+    --shadow:rgba(38,25,10,0.28);
+    color-scheme:light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#1B140C;
+      --paper-deep:#221A0F;
+      --card:#251C11;
+      --ink:#F1E2BE;
+      --ink-soft:#CBB489;
+      --ink-faint:#8F7A53;
+      --rust:#E2735A;
+      --rust-deep:#C9573F;
+      --rust-soft:#4A2A1F;
+      --teal:#6FB3A6;
+      --teal-deep:#4C877C;
+      --teal-soft:#22352F;
+      --mustard:#E8B959;
+      --mustard-deep:#B4842F;
+      --line:#3E2F17;
+      --cream-ink:#2B1D10;
+      --shadow:rgba(0,0,0,0.55);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#1B140C; --paper-deep:#221A0F; --card:#251C11;
+    --ink:#F1E2BE; --ink-soft:#CBB489; --ink-faint:#8F7A53;
+    --rust:#E2735A; --rust-deep:#C9573F; --rust-soft:#4A2A1F;
+    --teal:#6FB3A6; --teal-deep:#4C877C; --teal-soft:#22352F;
+    --mustard:#E8B959; --mustard-deep:#B4842F; --line:#3E2F17;
+    --cream-ink:#2B1D10; --shadow:rgba(0,0,0,0.55);
+  }
+
+  *{box-sizing:border-box;}
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; scroll-behavior:auto !important;}
+  }
+  body{
+    background:var(--paper); color:var(--ink);
+    font-family:"Libre Baskerville","Iowan Old Style",Georgia,serif;
+    font-size:17px; line-height:1.65;
+    padding-left:max(20px, env(safe-area-inset-left,0px));
+    padding-right:max(20px, env(safe-area-inset-right,0px));
+    overflow-x:hidden;
+  }
+  img{max-width:100%; display:block;}
+  .wrap{max-width:840px; margin:0 auto;}
+  a{color:var(--rust-deep);}
+  :root[data-theme="dark"] a, @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) a{color:var(--rust);} }
+  h1,h2,h3{font-family:"Playfair Display",Georgia,serif; margin:0; text-wrap:balance; color:var(--ink);}
+  .stamp-label{
+    font-family:"Special Elite","Courier New",monospace; font-size:12px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--rust-deep);
+  }
+  :root[data-theme="dark"] .stamp-label, @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .stamp-label{color:var(--rust);}}
+  p{max-width:64ch; margin:0 0 14px;}
+  .max-p{max-width:64ch; color:var(--ink-soft); font-size:16.5px;}
+
+  /* reveal on scroll */
+  .reveal{opacity:0; transform:translateY(22px); transition:opacity .8s ease, transform .8s ease;}
+  .reveal.in{opacity:1; transform:none;}
+  @media (prefers-reduced-motion: reduce){ .reveal{opacity:1; transform:none;} }
+
+  /* topbar */
+  .topbar{
+    position:sticky; top:env(safe-area-inset-top,0px); z-index:60;
+    background:color-mix(in srgb, var(--paper) 90%, transparent);
+    backdrop-filter:blur(8px); border-bottom:1px solid var(--line);
+    padding:10px max(20px, env(safe-area-inset-left,0px));
+    display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
+  }
+  .brandmark{display:flex; align-items:center; gap:9px; font-family:"Playfair Display",serif; font-weight:700; font-size:15px;}
+  .brandmark .seal{
+    width:26px;height:26px;border-radius:50%;
+    background:radial-gradient(circle at 32% 28%, var(--rust), var(--rust-deep));
+    display:inline-flex;align-items:center;justify-content:center;
+    color:var(--cream-ink); font-family:"Special Elite",monospace; font-size:10px; flex:none;
+    box-shadow:0 1px 2px var(--shadow);
+  }
+  .topbar-links{display:flex; gap:8px; align-items:center; flex-wrap:wrap;}
+  .pill{
+    font-family:"Special Elite",monospace; font-size:11.5px; letter-spacing:.03em;
+    padding:7px 12px; border-radius:100px; border:1px solid var(--line);
+    color:var(--ink-soft); text-decoration:none; white-space:nowrap;
+    transition:border-color .15s, color .15s, background .15s;
+  }
+  .pill:hover{border-color:var(--rust); color:var(--rust-deep); background:var(--card);}
+  .pill.solid{background:var(--rust); border-color:var(--rust); color:var(--cream-ink);}
+  .pill.solid:hover{background:var(--rust-deep); border-color:var(--rust-deep);}
+  .langtoggle{display:flex; border:1px solid var(--line); border-radius:100px; overflow:hidden; font-family:"Special Elite",monospace; font-size:11.5px; flex:none;}
+  .langtoggle button{border:none; background:transparent; padding:7px 12px; color:var(--ink-soft); cursor:pointer; font-family:inherit; font-size:inherit;}
+  .langtoggle button.active{background:var(--rust); color:var(--cream-ink);}
+
+  /* hero */
+  .hero{
+    position:relative; margin-top:14px; border-radius:4px; overflow:hidden;
+    min-height:min(88vh,760px); display:flex; align-items:flex-end;
+    border:1px solid var(--line);
+  }
+  .hero-bg{
+    position:absolute; inset:-4%; background-size:cover; background-position:center 60%;
+    background-image:url('images/hero.jpg');
+    filter:sepia(.35) saturate(1.15) contrast(1.05) brightness(.82);
+    animation:kenburns 26s ease-in-out infinite alternate;
+    will-change:transform;
+  }
+  @keyframes kenburns{ from{transform:scale(1.06) translate(0,0);} to{transform:scale(1.18) translate(-1.5%,-1%);} }
+  @media (prefers-reduced-motion: reduce){ .hero-bg{animation:none; transform:scale(1.1);} }
+  .hero-scrim{position:absolute; inset:0; background:linear-gradient(180deg, rgba(20,12,5,.15) 0%, rgba(15,9,4,.92) 82%);}
+  .hero-parallax{position:absolute; inset:0; pointer-events:none; opacity:.5;}
+  .hero-parallax svg{position:absolute; bottom:0; left:0; width:100%; height:auto;}
+  .hero-route{position:absolute; top:14%; left:0; width:100%; height:60px; opacity:.55;}
+  .hero-copy{position:relative; z-index:2; padding:30px clamp(18px,4vw,54px) 40px; color:var(--cream-ink); width:100%;}
+  .hero-copy .stamp-label{
+    color:var(--mustard); display:inline-block; border:1px solid rgba(247,236,210,.4);
+    padding:5px 12px; border-radius:5px; margin-bottom:16px; max-width:100%;
+  }
+  .hero-copy h1{
+    font-family:"Rye",cursive; font-weight:400; color:var(--cream-ink);
+    font-size:clamp(38px,8vw,78px); line-height:.98; letter-spacing:.01em;
+    text-shadow:0 3px 18px rgba(0,0,0,.4);
+  }
+  .hero-copy .sub{
+    font-family:"Playfair Display",serif; font-style:italic; font-weight:600;
+    font-size:clamp(18px,2.6vw,26px); color:var(--cream-ink); margin:10px 0 18px; max-width:20ch;
+  }
+  .hero-copy p.lede{color:#EEE1C4; max-width:52ch; font-size:16.5px; margin:0 0 22px;}
+  .hero-ctas{display:flex; gap:12px; flex-wrap:wrap; align-items:center;}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px; font-family:"Special Elite",monospace;
+    font-size:13px; letter-spacing:.03em; padding:13px 20px; border-radius:6px; text-decoration:none; border:1px solid transparent;
+  }
+  .btn-seal{
+    background:radial-gradient(circle at 32% 28%, var(--rust), var(--rust-deep));
+    color:var(--cream-ink); border-radius:50px; padding:15px 26px; box-shadow:0 4px 14px var(--shadow);
+    transition:transform .2s ease;
+  }
+  .btn-seal:hover{transform:translateY(-2px) scale(1.02);}
+  .btn-ghost{border-color:rgba(247,236,210,.5); color:var(--cream-ink);}
+  .btn-ghost:hover{border-color:#fff; background:rgba(247,236,210,.1);}
+
+  /* stats strip */
+  .stats{display:flex; gap:0; margin-top:20px; border-top:1px dashed var(--line); border-bottom:1px dashed var(--line); flex-wrap:wrap;}
+  .stat{flex:1 1 160px; text-align:center; padding:26px 12px; border-right:1px dashed var(--line);}
+  .stat:last-child{border-right:none;}
+  .stat .num{font-family:"Playfair Display",serif; font-weight:900; font-size:clamp(30px,5vw,46px); color:var(--rust-deep); font-variant-numeric:tabular-nums;}
+  :root[data-theme="dark"] .stat .num, @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .stat .num{color:var(--rust);}}
+  .stat .lbl{font-family:"Special Elite",monospace; font-size:11px; letter-spacing:.1em; color:var(--ink-faint); text-transform:uppercase; margin-top:4px;}
+
+  section{padding:64px 0;}
+  section.alt{background:var(--paper-deep);}
+  .divider{display:flex; justify-content:center; padding:0;}
+  .divider .dots{
+    width:100%; max-width:840px; height:1px;
+    background-image:radial-gradient(circle, var(--line) 1.5px, transparent 1.5px);
+    background-size:14px 1px; background-repeat:repeat-x; background-position:center;
+  }
+  .kicker-row{display:flex; align-items:center; gap:14px; margin-bottom:10px;}
+  .kicker-row .stamp-label{white-space:nowrap;}
+  .kicker-row .rule{height:1px; flex:1; background:var(--line);}
+  h2.title{font-family:"Playfair Display",serif; font-weight:900; font-size:clamp(26px,4vw,38px); margin-bottom:16px;}
+
+  /* journey */
+  .journey-wrap{position:relative; margin-top:30px;}
+  .journey-svg{position:absolute; left:18px; top:0; width:64px; height:100%; overflow:visible;}
+  .journey-svg path{fill:none; stroke:var(--rust); stroke-width:3; stroke-linecap:round; stroke-dasharray:9 10;}
+  .journey-svg circle.marker{fill:var(--mustard); stroke:var(--paper); stroke-width:3;}
+  .waypoint{position:relative; padding-left:76px; margin-bottom:52px;}
+  .waypoint:last-child{margin-bottom:0;}
+  .waypoint .wlabel{font-family:"Special Elite",monospace; font-size:12px; letter-spacing:.08em; color:var(--rust-deep); text-transform:uppercase; margin-bottom:6px; display:block;}
+  :root[data-theme="dark"] .waypoint .wlabel, @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .waypoint .wlabel{color:var(--rust);}}
+  .waypoint h3{font-size:clamp(21px,3vw,27px); margin-bottom:10px;}
+  .waypoint .wgrid{display:flex; gap:22px; flex-wrap:wrap; align-items:flex-start; margin-top:14px;}
+  .waypoint .wgrid img{width:260px; max-width:100%; height:auto; border-radius:4px; border:1px solid var(--line); flex:0 1 260px;}
+  .waypoint .wgrid p{flex:1 1 260px; min-width:0; margin:0; color:var(--ink-soft);}
+  .waypoint.future{opacity:.85;}
+  .waypoint.future .wgrid{align-items:center;}
+  .waypoint.future p{font-style:italic; font-family:"Playfair Display",serif; font-size:18px; color:var(--ink);}
+
+  /* pull quote */
+  .pullquote-panel{
+    background:linear-gradient(155deg, var(--rust), var(--rust-deep)); color:var(--cream-ink);
+    padding:60px clamp(20px,5vw,60px); text-align:center; border-radius:4px; position:relative; overflow:hidden;
+  }
+  .pullquote-panel::before{
+    content:""; position:absolute; inset:0; opacity:.08; background-image:radial-gradient(circle, #fff 1px, transparent 1.5px); background-size:16px 16px;
+  }
+  .pullquote-panel blockquote{
+    font-family:"Playfair Display",serif; font-weight:700; font-style:italic;
+    font-size:clamp(24px,4.4vw,42px); line-height:1.2; margin:0 0 16px; position:relative; max-width:none;
+  }
+  .pullquote-panel cite{font-family:"Special Elite",monospace; font-size:12px; letter-spacing:.12em; font-style:normal; color:var(--mustard); position:relative;}
+
+  /* postcards */
+  .medallion{
+    width:96px; height:96px; border-radius:50%; overflow:hidden; border:4px solid var(--card);
+    box-shadow:0 0 0 1px var(--line), 0 6px 16px var(--shadow); margin:0 auto 8px;
+  }
+  .medallion img{width:100%; height:100%; object-fit:cover; filter:sepia(.3) contrast(1.05);}
+  .postcards{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:22px; margin-top:26px;}
+  .postcard{
+    background:var(--card); border:1px solid var(--line); border-radius:2px; padding:24px 22px;
+    position:relative; box-shadow:0 3px 10px var(--shadow); transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .postcard:hover{transform:rotate(-1deg) translateY(-4px); box-shadow:0 10px 22px var(--shadow);}
+  .postcard .stamp{
+    position:absolute; top:14px; right:16px; width:46px; height:56px; border:2px dashed var(--line);
+    display:flex; align-items:center; justify-content:center; font-family:"Special Elite",monospace;
+    font-size:9px; color:var(--ink-faint); text-align:center; line-height:1.2; padding:4px; transform:rotate(4deg);
+  }
+  .postcard q{font-family:"Playfair Display",serif; font-style:italic; font-size:16.5px; display:block; margin:0 0 14px; max-width:none; color:var(--ink);}
+  .postcard .who{font-family:"Special Elite",monospace; font-size:12px; color:var(--rust-deep); letter-spacing:.05em;}
+  :root[data-theme="dark"] .postcard .who, @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .postcard .who{color:var(--rust);}}
+
+  /* ledger */
+  .ledger-wrap{margin-top:24px; overflow-x:auto; border:1px solid var(--line); border-radius:4px; background:var(--card);}
+  table.ledger{width:100%; border-collapse:collapse; min-width:600px;}
+  table.ledger th{
+    text-align:left; font-family:"Special Elite",monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--ink-faint); font-weight:400; padding:13px 16px; border-bottom:1px solid var(--line); background:var(--paper-deep);
+  }
+  table.ledger td{padding:14px 16px; border-bottom:1px dashed var(--line); font-size:14.5px; color:var(--ink-soft); vertical-align:top;}
+  table.ledger tr:last-child td{border-bottom:none;}
+  table.ledger td.priority{color:var(--ink); font-weight:700; font-family:"Playfair Display",serif; font-size:15.5px;}
+  table.ledger td.band{font-family:"Special Elite",monospace; color:var(--rust-deep); font-size:13px; white-space:nowrap;}
+  :root[data-theme="dark"] table.ledger td.band, @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) table.ledger td.band{color:var(--rust);}}
+
+  /* become part */
+  .subhead{font-family:"Special Elite",monospace; font-size:13px; letter-spacing:.08em; color:var(--teal-deep); text-transform:uppercase; margin:34px 0 12px; display:block;}
+  :root[data-theme="dark"] .subhead, @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .subhead{color:var(--teal);}}
+  .subhead:first-of-type{margin-top:8px;}
+  .biz-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:14px; margin-top:14px;}
+  .biz-card{background:var(--card); border:1px solid var(--line); border-radius:3px; padding:18px;}
+  .biz-card h3{font-size:16px; margin-bottom:7px;}
+  .biz-card p{font-size:13.8px; color:var(--ink-soft); margin:0; max-width:none;}
+  .biz-tag{display:inline-block; font-family:"Special Elite",monospace; font-size:10px; letter-spacing:.07em; text-transform:uppercase; color:var(--teal-deep); background:var(--teal-soft); padding:3px 8px; border-radius:3px; margin-bottom:9px;}
+  :root[data-theme="dark"] .biz-tag, @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .biz-tag{color:var(--teal);}}
+
+  .ticket-row{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:16px; margin-top:14px;}
+  .ticket{
+    position:relative;
+    background:radial-gradient(circle at 0 50%, var(--paper) 7px, transparent 7.5px), radial-gradient(circle at 100% 50%, var(--paper) 7px, transparent 7.5px), var(--card);
+    border:1px dashed var(--line); border-radius:4px; padding:20px 18px; display:flex; flex-direction:column; gap:9px;
+    transition:transform .25s ease;
+  }
+  .ticket:hover{transform:translateY(-4px);}
+  .ticket .name{font-family:"Playfair Display",serif; font-weight:700; font-size:17px;}
+  .ticket .amt{font-family:"Special Elite",monospace; font-size:18px; color:var(--rust-deep);}
+  :root[data-theme="dark"] .ticket .amt, @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ticket .amt{color:var(--rust);}}
+  .ticket .perf{border-top:1px dashed var(--line);}
+  .ticket p{font-size:13.5px; color:var(--ink-soft); margin:0; max-width:none;}
+
+  /* road ahead */
+  .road-ahead{
+    position:relative; border-radius:4px; overflow:hidden; border:1px solid var(--line);
+    padding:0;
+  }
+  .road-ahead .rbg{
+    position:absolute; inset:0; background-image:url('images/flowers.jpg'); background-size:cover; background-position:center 40%;
+    filter:sepia(.3) saturate(1.1) contrast(1.02) brightness(.55);
+  }
+  .road-ahead .rscrim{position:absolute; inset:0; background:linear-gradient(180deg, rgba(20,14,6,.35), rgba(15,10,5,.88));}
+  .road-ahead .rcopy{position:relative; z-index:2; padding:56px clamp(20px,5vw,60px); color:var(--cream-ink);}
+  .road-ahead h2{color:var(--cream-ink); font-size:clamp(26px,4.4vw,40px); max-width:16ch;}
+  .road-ahead p{color:#EFE3C8; max-width:56ch; font-size:16.5px;}
+  .road-ahead .inset{display:flex; gap:16px; align-items:center; margin-top:22px; flex-wrap:wrap;}
+  .road-ahead .inset img{width:150px; border-radius:4px; border:2px solid rgba(247,236,210,.35);}
+  .road-ahead .inset .cap{font-family:"Special Elite",monospace; font-size:12px; color:var(--mustard); max-width:32ch;}
+
+  /* steps */
+  .steps{list-style:none; margin:24px 0 0; padding:0; counter-reset:step; display:grid; gap:16px;}
+  .steps li{display:flex; gap:16px; counter-increment:step; align-items:flex-start;}
+  .steps li::before{
+    content:counter(step); font-family:"Special Elite",monospace; font-weight:400; font-size:14px;
+    flex:none; width:30px; height:30px; border-radius:50%; border:2px solid var(--rust);
+    color:var(--rust-deep); display:flex; align-items:center; justify-content:center;
+  }
+  :root[data-theme="dark"] .steps li::before, @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .steps li::before{color:var(--rust);}}
+  .steps p{margin:0; font-size:15.5px; color:var(--ink-soft); padding-top:4px;}
+
+  /* contact */
+  .contact-grid{display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:24px;}
+  @media (max-width:600px){ .contact-grid{grid-template-columns:1fr;} }
+  .contact-card{background:var(--card); border:1px solid var(--line); border-radius:3px; padding:22px;}
+  .contact-card h3{font-size:16px; margin-bottom:12px;}
+  .contact-card .row{display:flex; gap:9px; font-size:14.5px; color:var(--ink-soft); margin-bottom:8px;}
+  .contact-card a{color:var(--ink-soft); text-decoration:underline; text-decoration-color:var(--line);}
+  .cta-row{display:flex; gap:10px; flex-wrap:wrap; margin-top:16px;}
+  .btn-alt{display:inline-flex; align-items:center; gap:7px; font-family:"Special Elite",monospace; font-size:12px; padding:10px 15px; border-radius:5px; border:1px solid var(--line); color:var(--ink); text-decoration:none; background:var(--paper);}
+  .btn-alt:hover{border-color:var(--rust); color:var(--rust-deep);}
+
+  .disclaimer{max-width:840px; margin:0 auto; padding:34px 0 6px; font-size:12.6px; line-height:1.6; color:var(--ink-faint); border-top:1px solid var(--line); margin-top:10px;}
+  .disclaimer p{max-width:none; margin:0 0 10px;}
+  footer{background:var(--ink); color:var(--paper); padding:40px max(20px, env(safe-area-inset-left,0px)) calc(30px + env(safe-area-inset-bottom,0px));}
+  :root[data-theme="dark"] footer, @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) footer{background:#0F0A05;}}
+  footer .wrap{display:flex; flex-direction:column; gap:12px;}
+  footer .closing{font-family:"Playfair Display",serif; font-style:italic; font-weight:700; font-size:22px; color:var(--paper); max-width:30ch;}
+  footer .credit{font-family:"Special Elite",monospace; font-size:11px; color:#B79A62; letter-spacing:.02em;}
+  footer .classic-link{font-family:"Special Elite",monospace; font-size:11.5px; color:#C7AD76;}
+  footer .classic-link a{color:#E4CA92;}
+
+  /* sticky CTA */
+  .sticky-cta{
+    position:fixed; right:max(18px, env(safe-area-inset-right,0px)); bottom:calc(18px + env(safe-area-inset-bottom,0px));
+    z-index:80; width:78px; height:78px; border-radius:50%;
+    background:radial-gradient(circle at 32% 28%, var(--rust), var(--rust-deep));
+    color:var(--cream-ink); display:flex; align-items:center; justify-content:center; text-align:center;
+    font-family:"Special Elite",monospace; font-size:10.5px; line-height:1.25; text-decoration:none;
+    box-shadow:0 6px 18px var(--shadow); opacity:0; transform:translateY(12px) scale(.9); pointer-events:none;
+    transition:opacity .35s ease, transform .35s ease;
+  }
+  .sticky-cta.show{opacity:1; transform:none; pointer-events:auto;}
+  .sticky-cta::before{
+    content:""; position:absolute; inset:-6px; border-radius:50%; border:1px solid var(--rust);
+    animation:ring 2.6s ease-out infinite;
+  }
+  @keyframes ring{0%{opacity:.6; transform:scale(.9);} 100%{opacity:0; transform:scale(1.35);}}
+  @media (prefers-reduced-motion: reduce){ .sticky-cta::before{animation:none; display:none;} }
+  @media (max-width:520px){ .sticky-cta{width:64px; height:64px; font-size:9.5px;} }
+
+  @media (max-width:560px){
+    section{padding:46px 0;}
+    .waypoint{padding-left:60px;}
+    .journey-svg{left:10px; width:48px;}
+    .stat{flex:1 1 100%; border-right:none; border-bottom:1px dashed var(--line);}
+    .stat:last-child{border-bottom:none;}
+    .waypoint .wgrid{flex-direction:column;}
+    .waypoint .wgrid img{width:100%; max-width:280px; height:auto; flex:none;}
+  }
+</style>
+
+<div class="topbar">
+  <div class="brandmark"><span class="seal">OTH</span><span data-i18n="brand">The Old Toll House</span></div>
+  <div class="topbar-links">
+    <div class="langtoggle" role="group" aria-label="Language">
+      <button type="button" id="btn-en" class="active" onclick="setLang('en')">EN</button>
+      <button type="button" id="btn-af" onclick="setLang('af')">AF</button>
+    </div>
+    <a class="pill" href="tel:0837728252" data-i18n="nav.call">Call</a>
+    <a class="pill solid" href="#become" data-i18n="nav.cta">Join the story</a>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-parallax" id="heroParallax">
+    <svg viewBox="0 0 800 160" preserveAspectRatio="none" style="transform:translateY(10px)">
+      <path d="M0,120 L120,70 L230,110 L340,40 L430,95 L540,55 L650,100 L800,60 L800,160 L0,160 Z" fill="var(--ink)" opacity="0.35"/>
+    </svg>
+  </div>
+  <svg class="hero-route" viewBox="0 0 800 60" preserveAspectRatio="none">
+    <path d="M0,30 C150,5 250,55 400,30 C550,5 650,55 800,25" fill="none" stroke="var(--mustard)" stroke-width="2.5" stroke-dasharray="1 12" stroke-linecap="round"/>
+  </svg>
+  <div class="hero-scrim"></div>
+  <div class="hero-copy">
+    <span class="stamp-label" data-i18n="hero.stamp">A NATIONAL MONUMENT · MONTAGU PASS, GEORGE · EST. 1847</span>
+    <h1 data-i18n="hero.h1">THE OLD TOLL HOUSE</h1>
+    <div class="sub" data-i18n="hero.sub">is still standing. Help us make sure it never stops.</div>
+    <p class="lede" data-i18n="hero.p">Fire took its roof — twice. Neglect nearly took the rest. What's left is a hundred and eighty years of history, held up by a handful of volunteers who refuse to let it fall. This is where you come in.</p>
+    <div class="hero-ctas">
+      <a class="btn btn-seal" href="#become" data-i18n="hero.cta1">Join the restoration</a>
+      <a class="btn btn-ghost" href="#journey" data-i18n="hero.cta2">See the journey</a>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="stats">
+    <div class="stat reveal"><div class="num" data-count="180" data-suffix="+">0</div><div class="lbl" data-i18n="stat1">YEARS STANDING</div></div>
+    <div class="stat reveal"><div class="num" data-count="2">0</div><div class="lbl" data-i18n="stat2">FIRES SURVIVED</div></div>
+    <div class="stat reveal"><div class="num" data-count="250" data-prefix="R">0</div><div class="lbl" data-i18n="stat3">GETS YOU STARTED</div></div>
+  </div>
+</div>
+
+<section id="journey">
+  <div class="wrap">
+    <div class="kicker-row"><span class="stamp-label" data-i18n="journey.kicker">The Journey So Far</span><span class="rule"></span></div>
+    <p class="max-p reveal" data-i18n="journey.intro">Every restoration has a before and an after. Here's ours — so far.</p>
+
+    <div class="journey-wrap">
+      <svg class="journey-svg" id="journeySvg" viewBox="0 0 60 600" preserveAspectRatio="none">
+        <path id="journeyPath" d="M30,10 C10,120 50,180 30,300 C10,420 50,480 30,590" />
+        <circle class="marker" id="journeyMarker" cx="30" cy="10" r="7"/>
+      </svg>
+
+      <div class="waypoint reveal">
+        <span class="wlabel" data-i18n="past.label">1855 — AND AGAIN, LATER</span>
+        <h3 data-i18n="past.h">It nearly didn't make it.</h3>
+        <div class="wgrid">
+          <img src="images/fire.jpg" data-i18n-alt="past.alt" alt="The toll house after a structural fire, roof and windows burnt out" style="filter:sepia(.3) contrast(1.05);">
+          <p data-i18n="past.p">Fire took the roof once, then took it again. Thieves stripped the yellowwood beams, the doors, the Oregon pine floors. For a while, it looked like the mountain would simply take the building back.</p>
+        </div>
+      </div>
+
+      <div class="waypoint reveal">
+        <span class="wlabel" data-i18n="present.label">Today</span>
+        <h3 data-i18n="present.h">It's still here.</h3>
+        <div class="wgrid">
+          <img src="images/hero.jpg" data-i18n-alt="present.alt" alt="The restored toll house today, with a new roof and secure stonework" style="filter:sepia(.3) contrast(1.05); object-fit:cover; height:170px;">
+          <p data-i18n="present.p">It didn't fall. Volunteers rebuilt it by hand — roof, floors, walls — and reopened the doors. Today it's a living museum, a coffee stop, a reason to pull over on the way up the Pass.</p>
+        </div>
+      </div>
+
+      <div class="waypoint future reveal">
+        <span class="wlabel" data-i18n="future.label">What comes next</span>
+        <h3 data-i18n="future.h">The road keeps going.</h3>
+        <div class="wgrid">
+          <p data-i18n="future.p">There's more of this story left to write. Keep scrolling.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><div class="dots"></div></div>
+
+<section>
+  <div class="wrap">
+    <div class="medallion reveal"><img src="images/window.jpg" alt="A close-up of the toll house's original sandstone window frame"></div>
+    <div class="pullquote-panel reveal">
+      <blockquote data-i18n="quote.text">"A pass without its toll house is just a road."</blockquote>
+      <cite data-i18n="quote.cite">FRIENDS OF THE OLD TOLL HOUSE</cite>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="kicker-row"><span class="stamp-label" data-i18n="post.kicker">What People Find Here</span><span class="rule"></span></div>
+    <div class="postcards">
+      <div class="postcard reveal">
+        <div class="stamp" data-i18n="post.stamp">VISITED<br>THE PASS</div>
+        <q>What a fantastic find. Just off a 200m dirt road at the bottom of the Outeniqua Pass. The very best pancakes and coffee and an interesting museum within the Toll House. Great views and a perfect place to relax.</q>
+        <span class="who">— PAUL</span>
+      </div>
+      <div class="postcard reveal">
+        <div class="stamp" data-i18n="post.stamp2">VISITED<br>THE PASS</div>
+        <q>What a sensational place! A good overview of history and breathtaking scenery of the surrounding mountains, and of course, to round off your visit, a delicious pancake followed by coffee is a must!</q>
+        <span class="who">— CHARVET</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="kicker-row"><span class="stamp-label" data-i18n="ledger.kicker">Where Every Rand Goes</span><span class="rule"></span></div>
+    <p class="max-p reveal" data-i18n="ledger.intro">Think of this as the account book, laid open. Every line is real work waiting for real hands. The final say on how it's spent always stays with the Friends — Signatura just makes the introductions, and helps say thank you properly.</p>
+    <div class="ledger-wrap reveal">
+      <table class="ledger">
+        <thead><tr><th data-i18n="tbl.h1">Priority</th><th data-i18n="tbl.h2">Indicative band</th><th data-i18n="tbl.h3">What it covers</th></tr></thead>
+        <tbody>
+          <tr><td class="priority" data-i18n="row1.p">Immediate fabric</td><td class="band">R25,000 – R80,000</td><td data-i18n="row1.d">Roof, joinery, security, damp-proofing, rewiring, fire readiness.</td></tr>
+          <tr><td class="priority" data-i18n="row2.p">Museum &amp; trail</td><td class="band">R15,000 – R50,000</td><td data-i18n="row2.d">Display cases, trail markers, printed history, somewhere to sit.</td></tr>
+          <tr><td class="priority" data-i18n="row3.p">Hospitality kit</td><td class="band">R10,000 – R35,000</td><td data-i18n="row3.d">Kitchen equipment, furniture, umbrellas, signage.</td></tr>
+          <tr><td class="priority" data-i18n="row4.p">Camping / ox-wagon</td><td class="band">R80,000 – R250,000+</td><td data-i18n="row4.d">Site works, services, real ox-wagon units — a future income line.</td></tr>
+          <tr><td class="priority" data-i18n="row5.p">Operating reserve</td><td class="band">R30,000 – R100,000</td><td data-i18n="row5.d">Rates, insurance, fuel, a cushion for the flooded-pass season.</td></tr>
+          <tr><td class="priority" data-i18n="row6.p">Skills in kind</td><td class="band" data-i18n="row6.band">Value as given</td><td data-i18n="row6.d">Masons, carpenters, electricians, accountants, designers, security.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="become">
+  <div class="wrap">
+    <div class="kicker-row"><span class="stamp-label" data-i18n="become.kicker">Become Part Of The Story</span><span class="rule"></span></div>
+
+    <span class="subhead" data-i18n="biz.subhead">For Businesses — Make a Real Difference</span>
+    <p class="max-p reveal" data-i18n="biz.intro">Every pledge here has a name attached and a job it pays for — a roof that stops leaking, a gate that keeps thieves out, a season the doors stay open. This is giving you can drive past and point to.</p>
+    <div class="biz-grid">
+      <div class="biz-card reveal"><span class="biz-tag" data-i18n="biz1.tag">Recurring</span><h3 data-i18n="biz1.name">Patron business</h3><p data-i18n="biz1.desc">A yearly pledge, R5,000–R50,000, with your name on a board at the house.</p></div>
+      <div class="biz-card reveal"><span class="biz-tag" data-i18n="biz2.tag">In kind</span><h3 data-i18n="biz2.name">Materials desk</h3><p data-i18n="biz2.desc">Stone, lime, timber, ironmongery, paint, solar, fencing — against a real list.</p></div>
+      <div class="biz-card reveal"><span class="biz-tag" data-i18n="biz3.tag">In kind</span><h3 data-i18n="biz3.name">A trade day</h3><p data-i18n="biz3.desc">One day from a contractor already working in George. Billed or donated.</p></div>
+      <div class="biz-card reveal"><span class="biz-tag" data-i18n="biz4.tag">Spend</span><h3 data-i18n="biz4.name">Book the venue</h3><p data-i18n="biz4.desc">Bring your team for an outing. Your spend becomes their operating income.</p></div>
+      <div class="biz-card reveal"><span class="biz-tag" data-i18n="biz5.tag">Network</span><h3 data-i18n="biz5.name">Make an introduction</h3><p data-i18n="biz5.desc">Walk a client or investor up the Pass. Heritage is half of why people stay.</p></div>
+    </div>
+
+    <span class="subhead" data-i18n="ind.subhead">For Individuals — Leave a Legacy</span>
+    <p class="max-p reveal" data-i18n="ind.intro">Put your name on a bench here and it outlasts you by a century, easily; the stone isn't going anywhere. A small monthly gift adds up more, over the years, than one generous cheque that never comes again.</p>
+    <div class="ticket-row">
+      <div class="ticket reveal"><span class="name" data-i18n="tk1.name">Friend</span><span class="amt">R250 – R1,000</span><div class="perf"></div><p data-i18n="tk1.desc">Once-off or monthly. Keeps the coffee shift running.</p></div>
+      <div class="ticket reveal"><span class="name" data-i18n="tk2.name">Keeper</span><span class="amt">R1,000 – R5,000</span><div class="perf"></div><p data-i18n="tk2.desc">Your name on the thank-you list; invited to a walkabout.</p></div>
+      <div class="ticket reveal"><span class="name" data-i18n="tk3.name">Pass Patron</span><span class="amt">R5,000 – R25,000</span><div class="perf"></div><p data-i18n="tk3.desc">Real recognition — dedicate a bench, tool, or trail marker.</p></div>
+      <div class="ticket reveal"><span class="name" data-i18n="tk4.name">Foundation Gift</span><span class="amt">R25,000+</span><div class="perf"></div><p data-i18n="tk4.desc">A real conversation about backing one project, start to finish.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="road-ahead reveal">
+      <div class="rbg"></div>
+      <div class="rscrim"></div>
+      <div class="rcopy">
+        <span class="stamp-label" style="color:var(--mustard);" data-i18n="road.kicker">The Road Ahead</span>
+        <h2 style="margin-top:10px;" data-i18n="road.h">Picture what's still to come.</h2>
+        <p data-i18n="road.p1">Canvas tents under the Outeniqua stars. An ox-wagon creaking on its wheels for the first time in a hundred years. Lantern light along a trail that used to just be dirt. None of it exists yet — not the camping ground, not the ox-wagon stay. All of it is possible, with the right hands and the right support.</p>
+        <p data-i18n="road.p2">This is the part of the story that hasn't been written. You could be one of the people who writes it.</p>
+        <div class="inset">
+          <img src="images/wagon.jpg" data-i18n-alt="road.wagonalt" alt="A handbuilt ox-wagon model, a preview of the planned accommodation">
+          <span class="cap" data-i18n="road.wagoncap">A hand-built preview already sits in the museum — proof this isn't just a dream.</span>
+        </div>
+        <div class="hero-ctas" style="margin-top:26px;">
+          <a class="btn btn-seal" href="#become" data-i18n="road.cta">Help build what's next</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="kicker-row"><span class="stamp-label" data-i18n="steps.kicker">How To Join The Story</span><span class="rule"></span></div>
+    <ol class="steps">
+      <li><p data-i18n="step1">Read this, then go and see it — oldtollhouse.co.za, or drive the Pass yourself on a Saturday or Sunday.</p></li>
+      <li><p data-i18n="step2">Decide what you can offer: cash, a monthly gift, materials, a trade day, or an introduction.</p></li>
+      <li><p data-i18n="step3">Signatura connects you straight to the Friends — ask for Gerda Stols — so your gift reaches the people doing the work.</p></li>
+      <li><p data-i18n="step4">Confirm banking details directly with the Friends before you pay anything. Treat anything else as out of date.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="kicker-row"><span class="stamp-label" data-i18n="contact.kicker">Get In Touch</span><span class="rule"></span></div>
+    <div class="contact-grid">
+      <div class="contact-card reveal">
+        <h3 data-i18n="c1.h">Friends of the Old Toll House</h3>
+        <div class="row"><span data-i18n="c1.addr">Gerda Stols · Malgaekraal farm, N9, George</span></div>
+        <div class="row"><span><a href="mailto:info@oldtollhouse.co.za">info@oldtollhouse.co.za</a></span></div>
+        <div class="row"><span><a href="tel:0837728252">083 772 8252</a></span></div>
+        <div class="row"><span><a href="https://www.oldtollhouse.co.za" target="_blank" rel="noopener">oldtollhouse.co.za</a> <span data-i18n="c1.hours">· Open Saturdays &amp; Sundays, 09:00–15:00</span></span></div>
+        <div class="cta-row">
+          <a class="btn-alt" href="tel:0837728252" data-i18n="btn.call">Call</a>
+          <a class="btn-alt" href="https://wa.me/27837728252" target="_blank" rel="noopener">WhatsApp</a>
+          <a class="btn-alt" href="mailto:info@oldtollhouse.co.za" data-i18n="btn.email">Email</a>
+        </div>
+      </div>
+      <div class="contact-card reveal">
+        <h3 data-i18n="c2.h">Signatura — this drive</h3>
+        <div class="row"><span data-i18n="c2.l1">Working the Garden Route and the wider Western Cape.</span></div>
+        <div class="row"><span data-i18n="c2.l2">Bring this page to the people you know.</span></div>
+        <div class="cta-row"><a class="btn-alt" href="tel:0837728252" data-i18n="c2.btn">Ask for an introduction</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="disclaimer wrap">
+  <p data-i18n="disc1"><strong>A plain word on all of this:</strong> nothing here is a formal prospectus, a share offer, or a promise that your money comes back to you. What "investing in a landmark" means, in this case, is exactly what it sounds like — giving money, materials or time so a public building stays standing. You don't end up owning any part of it, and that's the point.</p>
+  <p data-i18n="disc2">The Rand figures above are a starting point for conversation, not an audited budget. Before you pay anything, confirm the current banking details, the NPO number, and the tax status directly with the Friends of the Old Toll House.</p>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="closing" data-i18n="footer.closing">The road is still being built. Walk it with us.</div>
+    <div class="credit" data-i18n="footer.credit">PUT TOGETHER WITH THE FRIENDS OF THE OLD TOLL HOUSE AND SIGNATURA · SEPTEMBER 2026 · OLDTOLLHOUSE.CO.ZA</div>
+    <div class="classic-link" data-i18n="footer.classic">Prefer a plainer read? <a href="index.html">See the classic version →</a></div>
+  </div>
+</footer>
+
+<a class="sticky-cta" id="stickyCta" href="#become" data-i18n="sticky.cta">JOIN<br>THE STORY</a>
+
+<script>
+(function(){
+  var T = {
+    en: {
+      "brand":"The Old Toll House","docTitle":"Old Toll House Revival",
+      "nav.call":"Call","nav.cta":"Join the story",
+      "hero.stamp":"A NATIONAL MONUMENT · MONTAGU PASS, GEORGE · EST. 1847",
+      "hero.h1":"THE OLD TOLL HOUSE",
+      "hero.sub":"is still standing. Help us make sure it never stops.",
+      "hero.p":"Fire took its roof — twice. Neglect nearly took the rest. What's left is a hundred and eighty years of history, held up by a handful of volunteers who refuse to let it fall. This is where you come in.",
+      "hero.cta1":"Join the restoration","hero.cta2":"See the journey",
+      "stat1":"YEARS STANDING","stat2":"FIRES SURVIVED","stat3":"GETS YOU STARTED",
+      "journey.kicker":"The Journey So Far",
+      "journey.intro":"Every restoration has a before and an after. Here's ours — so far.",
+      "past.label":"1855 — and again, later","past.h":"It nearly didn't make it.",
+      "past.alt":"The toll house after a structural fire, roof and windows burnt out",
+      "past.p":"Fire took the roof once, then took it again. Thieves stripped the yellowwood beams, the doors, the Oregon pine floors. For a while, it looked like the mountain would simply take the building back.",
+      "present.label":"Today","present.h":"It's still here.",
+      "present.alt":"The restored toll house today, with a new roof and secure stonework",
+      "present.p":"It didn't fall. Volunteers rebuilt it by hand — roof, floors, walls — and reopened the doors. Today it's a living museum, a coffee stop, a reason to pull over on the way up the Pass.",
+      "future.label":"What comes next","future.h":"The road keeps going.",
+      "future.p":"There's more of this story left to write. Keep scrolling.",
+      "quote.text":"“A pass without its toll house is just a road.”",
+      "quote.cite":"FRIENDS OF THE OLD TOLL HOUSE",
+      "post.kicker":"What People Find Here","post.stamp":"VISITED<br>THE PASS","post.stamp2":"VISITED<br>THE PASS",
+      "ledger.kicker":"Where Every Rand Goes",
+      "ledger.intro":"Think of this as the account book, laid open. Every line is real work waiting for real hands. The final say on how it's spent always stays with the Friends — Signatura just makes the introductions, and helps say thank you properly.",
+      "tbl.h1":"Priority","tbl.h2":"Indicative band","tbl.h3":"What it covers",
+      "row1.p":"Immediate fabric","row1.d":"Roof, joinery, security, damp-proofing, rewiring, fire readiness.",
+      "row2.p":"Museum & trail","row2.d":"Display cases, trail markers, printed history, somewhere to sit.",
+      "row3.p":"Hospitality kit","row3.d":"Kitchen equipment, furniture, umbrellas, signage.",
+      "row4.p":"Camping / ox-wagon","row4.d":"Site works, services, real ox-wagon units — a future income line.",
+      "row5.p":"Operating reserve","row5.d":"Rates, insurance, fuel, a cushion for the flooded-pass season.",
+      "row6.p":"Skills in kind","row6.band":"Value as given","row6.d":"Masons, carpenters, electricians, accountants, designers, security.",
+      "become.kicker":"Become Part Of The Story",
+      "biz.subhead":"For Businesses — Make a Real Difference",
+      "biz.intro":"Every pledge here has a name attached and a job it pays for — a roof that stops leaking, a gate that keeps thieves out, a season the doors stay open. This is giving you can drive past and point to.",
+      "biz1.tag":"Recurring","biz1.name":"Patron business","biz1.desc":"A yearly pledge, R5,000–R50,000, with your name on a board at the house.",
+      "biz2.tag":"In kind","biz2.name":"Materials desk","biz2.desc":"Stone, lime, timber, ironmongery, paint, solar, fencing — against a real list.",
+      "biz3.tag":"In kind","biz3.name":"A trade day","biz3.desc":"One day from a contractor already working in George. Billed or donated.",
+      "biz4.tag":"Spend","biz4.name":"Book the venue","biz4.desc":"Bring your team for an outing. Your spend becomes their operating income.",
+      "biz5.tag":"Network","biz5.name":"Make an introduction","biz5.desc":"Walk a client or investor up the Pass. Heritage is half of why people stay.",
+      "ind.subhead":"For Individuals — Leave a Legacy",
+      "ind.intro":"Put your name on a bench here and it outlasts you by a century, easily; the stone isn't going anywhere. A small monthly gift adds up more, over the years, than one generous cheque that never comes again.",
+      "tk1.name":"Friend","tk1.desc":"Once-off or monthly. Keeps the coffee shift running.",
+      "tk2.name":"Keeper","tk2.desc":"Your name on the thank-you list; invited to a walkabout.",
+      "tk3.name":"Pass Patron","tk3.desc":"Real recognition — dedicate a bench, tool, or trail marker.",
+      "tk4.name":"Foundation Gift","tk4.desc":"A real conversation about backing one project, start to finish.",
+      "road.kicker":"The Road Ahead","road.h":"Picture what's still to come.",
+      "road.p1":"Canvas tents under the Outeniqua stars. An ox-wagon creaking on its wheels for the first time in a hundred years. Lantern light along a trail that used to just be dirt. None of it exists yet — not the camping ground, not the ox-wagon stay. All of it is possible, with the right hands and the right support.",
+      "road.p2":"This is the part of the story that hasn't been written. You could be one of the people who writes it.",
+      "road.wagonalt":"A handbuilt ox-wagon model, a preview of the planned accommodation",
+      "road.wagoncap":"A hand-built preview already sits in the museum — proof this isn't just a dream.",
+      "road.cta":"Help build what's next",
+      "steps.kicker":"How To Join The Story",
+      "step1":"Read this, then go and see it — oldtollhouse.co.za, or drive the Pass yourself on a Saturday or Sunday.",
+      "step2":"Decide what you can offer: cash, a monthly gift, materials, a trade day, or an introduction.",
+      "step3":"Signatura connects you straight to the Friends — ask for Gerda Stols — so your gift reaches the people doing the work.",
+      "step4":"Confirm banking details directly with the Friends before you pay anything. Treat anything else as out of date.",
+      "contact.kicker":"Get In Touch",
+      "c1.h":"Friends of the Old Toll House","c1.addr":"Gerda Stols · Malgaekraal farm, N9, George",
+      "c1.hours":"· Open Saturdays &amp; Sundays, 09:00–15:00","btn.call":"Call","btn.email":"Email",
+      "c2.h":"Signatura — this drive","c2.l1":"Working the Garden Route and the wider Western Cape.",
+      "c2.l2":"Bring this page to the people you know.","c2.btn":"Ask for an introduction",
+      "disc1":"<strong>A plain word on all of this:</strong> nothing here is a formal prospectus, a share offer, or a promise that your money comes back to you. What \"investing in a landmark\" means, in this case, is exactly what it sounds like — giving money, materials or time so a public building stays standing. You don't end up owning any part of it, and that's the point.",
+      "disc2":"The Rand figures above are a starting point for conversation, not an audited budget. Before you pay anything, confirm the current banking details, the NPO number, and the tax status directly with the Friends of the Old Toll House.",
+      "footer.closing":"The road is still being built. Walk it with us.",
+      "footer.credit":"PUT TOGETHER WITH THE FRIENDS OF THE OLD TOLL HOUSE AND SIGNATURA · SEPTEMBER 2026 · OLDTOLLHOUSE.CO.ZA",
+      "footer.classic":"Prefer a plainer read? <a href=\"index.html\">See the classic version →</a>",
+      "sticky.cta":"JOIN<br>THE STORY"
+    },
+    af: {
+      "brand":"Die Ou Tolhuis","docTitle":"Ou Tolhuis Herlewing",
+      "nav.call":"Bel","nav.cta":"Sluit aan by die storie",
+      "hero.stamp":"'N NASIONALE GEDENKWAARDIGHEID · MONTAGU-PAS, GEORGE · GESTIG 1847",
+      "hero.h1":"DIE OU TOLHUIS",
+      "hero.sub":"staan nog. Help ons sorg dat dit nooit ophou nie.",
+      "hero.p":"Vuur het die dak gevat — twee keer. Verwaarlosing het byna die res gevat. Wat oorbly is honderd-en-tagtig jaar se geskiedenis, opgehou deur 'n handjievol vrywilligers wat weier om dit te laat val. Hier kom jy in.",
+      "hero.cta1":"Sluit aan by die herstel","hero.cta2":"Kyk na die reis",
+      "stat1":"JAAR STAANDE","stat2":"BRANDE OORLEEF","stat3":"KRY JOU AAN DIE GANG",
+      "journey.kicker":"Die Reis Tot Dusver",
+      "journey.intro":"Elke herstelwerk het 'n voor en 'n na. Hier's ons s'n — tot dusver.",
+      "past.label":"1855 — en weer, later","past.h":"Dit het amper nie gemaak nie.",
+      "past.alt":"Die tolhuis na 'n strukturele brand, dak en vensters uitgebrand",
+      "past.p":"Vuur het die dak een keer gevat, toe weer. Diewe het die geelhoutbalke gestroop, die deure, die Oregondennevloere. Vir 'n ruk het dit gelyk of die berg die gebou sommer sou terugvat.",
+      "present.label":"Vandag","present.h":"Dit staan steeds.",
+      "present.alt":"Die herstelde tolhuis vandag, met 'n nuwe dak en veilige klipwerk",
+      "present.p":"Dit het nie geval nie. Vrywilligers het dit met die hand herbou — dak, vloere, mure — en die deure weer oopgemaak. Vandag is dit 'n lewende museum, 'n koffiestop, 'n rede om op pad met die pas op stil te hou.",
+      "future.label":"Wat volgende kom","future.h":"Die pad gaan aan.",
+      "future.p":"Daar's nog meer van hierdie storie om te skryf. Rol af.",
+      "quote.text":"“'n Pas sonder sy tolhuis is maar net 'n pad.”",
+      "quote.cite":"VRIENDE VAN DIE OU TOLHUIS",
+      "post.kicker":"Wat Mense Hier Kry","post.stamp":"BESOEK AAN<br>DIE PAS","post.stamp2":"BESOEK AAN<br>DIE PAS",
+      "ledger.kicker":"Waarheen Elke Rand Gaan",
+      "ledger.intro":"Sien dit as die grootboek, oopgemaak. Elke lyn is regte werk wat op regte hande wag. Die finale sê oor hoe geld bestee word, bly altyd by die Vriende — Signatura maak net die kennismakings, en help om behoorlik dankie te sê.",
+      "tbl.h1":"Prioriteit","tbl.h2":"Aanduidende band","tbl.h3":"Wat dit dek",
+      "row1.p":"Onmiddellike herstelwerk","row1.d":"Dak, skrynwerk, sekuriteit, vogdigting, bedrading, brandgereedheid.",
+      "row2.p":"Museum & roete","row2.d":"Vertoonkaste, roetewysers, gedrukte geskiedenis, 'n plek om te sit.",
+      "row3.p":"Gasvryheidstoerusting","row3.d":"Kombuistoerusting, meubels, sambrele, wegwysers.",
+      "row4.p":"Kampering / ossewa","row4.d":"Terreinwerk, dienste, regte ossewaeenhede — 'n toekomstige inkomstebron.",
+      "row5.p":"Bedryfsreserwe","row5.d":"Erfbelasting, versekering, brandstof, 'n kussing vir die oorstromingseisoen.",
+      "row6.p":"Vaardighede in natura","row6.band":"Waarde soos gegee","row6.d":"Klipwerkers, skrynwerkers, elektrisiens, rekenmeesters, ontwerpers, sekuriteit.",
+      "become.kicker":"Word Deel Van Die Storie",
+      "biz.subhead":"Vir Besighede — Maak 'n Werklike Verskil",
+      "biz.intro":"Elke toesegging hier het 'n naam daaraan gekoppel en 'n taak wat dit betaal — 'n dak wat ophou lek, 'n hek wat diewe buite hou, 'n seisoen wat die deure oopbly. Dis gee wat jy kan verbyry en na kan wys.",
+      "biz1.tag":"Herhalend","biz1.name":"Patroon-besigheid","biz1.desc":"'n Jaarlikse toesegging, R5,000–R50,000, met jou naam op 'n bord by die huis.",
+      "biz2.tag":"In natura","biz2.name":"Materiaaltoonbank","biz2.desc":"Klip, kalk, hout, ystersmidware, verf, sonpanele, heinings — teen 'n regte lys.",
+      "biz3.tag":"In natura","biz3.name":"'n Vakdag","biz3.desc":"Een dag van 'n kontrakteur wat reeds in George werk. Gefaktureer of geskenk.",
+      "biz4.tag":"Besteding","biz4.name":"Bespreek die perseel","biz4.desc":"Bring jou span vir 'n uitstappie. Jou besteding word hulle bedryfsinkomste.",
+      "biz5.tag":"Netwerk","biz5.name":"Stel iemand bekend","biz5.desc":"Vat 'n kliënt of belegger die pas op. Erfenis is die helfte van waarom mense bly.",
+      "ind.subhead":"Vir Individue — Laat 'n Nalatenskap",
+      "ind.intro":"Sit jou naam op 'n bank hier, en dit oorleef jou maklik met 'n eeu; die klip gaan nêrens heen nie. 'n Klein maandelikse geskenk tel oor die jare meer op as een vrygewige tjek wat nooit weer kom nie.",
+      "tk1.name":"Vriend","tk1.desc":"Eenmalig of maandeliks. Hou die koffie-skof aan die gang.",
+      "tk2.name":"Bewaarder","tk2.desc":"Jou naam op die dankie-lys; genooi vir 'n staptoer.",
+      "tk3.name":"Pas-beskermheer","tk3.desc":"Regte erkenning — wy 'n bank, gereedskap, of roetewyser.",
+      "tk4.name":"Stigtingskenking","tk4.desc":"'n Regte gesprek oor die borg van een projek, van begin tot einde.",
+      "road.kicker":"Die Pad Vorentoe","road.h":"Verbeel jou wat nog kom.",
+      "road.p1":"Seilteente onder die Outeniekwa-sterre. 'n Ossewa wat vir die eerste keer in 'n honderd jaar op sy wiele kraak. Lantern-lig langs 'n roete wat vroeër maar net grond was. Niks hiervan bestaan nog nie — nie die kampeerterrein nie, nie die ossewa-verblyf nie. Dit is alles moontlik, met die regte hande en die regte steun.",
+      "road.p2":"Dis die deel van die storie wat nog nie geskryf is nie. Jy kan een van die mense wees wat dit skryf.",
+      "road.wagonalt":"'n Handgeboude ossewamodel, 'n voorskou van die beplande verblyf",
+      "road.wagoncap":"'n Met die hand geboude voorskou sit reeds in die museum — bewys dit is nie net 'n droom nie.",
+      "road.cta":"Help bou wat volgende kom",
+      "steps.kicker":"Hoe Om By Die Storie Aan Te Sluit",
+      "step1":"Lees dit, gaan kyk dan self — oldtollhouse.co.za, of ry self Saterdag of Sondag deur die pas.",
+      "step2":"Besluit wat jy kan bied: kontant, 'n maandelikse geskenk, materiaal, 'n vakdag, of 'n bekendstelling.",
+      "step3":"Signatura stel jou reguit aan die Vriende voor — vra vir Gerda Stols — sodat jou gawe by die mense uitkom wat die werk doen.",
+      "step4":"Bevestig bankbesonderhede direk met die Vriende voor jy enigiets betaal. Behandel enigiets anders as verouderd.",
+      "contact.kicker":"Kom Praat Met Ons",
+      "c1.h":"Vriende van die Ou Tolhuis","c1.addr":"Gerda Stols · Malgaekraal-plaas, N9, George",
+      "c1.hours":"· Oop Saterdae &amp; Sondae, 09:00–15:00","btn.call":"Bel","btn.email":"Epos",
+      "c2.h":"Signatura — hierdie veldtog","c2.l1":"Werk regoor die Tuinroete en die wyer Wes-Kaap.",
+      "c2.l2":"Bring hierdie bladsy na die mense wat jy ken.","c2.btn":"Vra vir 'n bekendstelling",
+      "disc1":"<strong>'n Eerlike woord hieroor:</strong> niks hier is 'n formele prospektus, aandele-aanbod, of 'n belofte dat jou geld na jou toe terugkom nie. Wat \"belê in 'n landmerk\" in hierdie geval beteken, is presies wat dit klink — geld, materiaal of tyd gee sodat 'n openbare gebou bly staan. Jy eindig nie met enige deel van die eiendom nie, en dis presies die punt.",
+      "disc2":"Die Rand-syfers hierbo is 'n beginpunt vir gesprek, nie 'n geouditeerde begroting nie. Bevestig, voor jy enigiets betaal, die huidige bankbesonderhede, NPO-nommer en belastingstatus direk met die Vriende van die Ou Tolhuis.",
+      "footer.closing":"Die pad word nog gebou. Loop dit saam met ons.",
+      "footer.credit":"SAAMGESTEL MET DIE VRIENDE VAN DIE OU TOLHUIS EN SIGNATURA · SEPTEMBER 2026 · OLDTOLLHOUSE.CO.ZA",
+      "footer.classic":"Verkies jy 'n eenvoudiger weergawe? <a href=\"index.html\">Sien die klassieke weergawe →</a>",
+      "sticky.cta":"SLUIT<br>AAN"
+    }
+  };
+
+  function applyLang(lang){
+    var dict = T[lang] || T.en;
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+      var key = el.getAttribute('data-i18n');
+      if(dict[key] !== undefined){ el.innerHTML = dict[key]; }
+    });
+    document.querySelectorAll('[data-i18n-alt]').forEach(function(el){
+      var key = el.getAttribute('data-i18n-alt');
+      if(dict[key] !== undefined){ el.setAttribute('alt', dict[key]); }
+    });
+    document.documentElement.setAttribute('lang', lang);
+    if(dict.docTitle){ document.title = dict.docTitle; }
+    var enBtn = document.getElementById('btn-en');
+    var afBtn = document.getElementById('btn-af');
+    if(enBtn && afBtn){ enBtn.classList.toggle('active', lang==='en'); afBtn.classList.toggle('active', lang==='af'); }
+    try{ localStorage.setItem('tollhouse-lang', lang); }catch(e){}
+  }
+  window.setLang = applyLang;
+  var initial = 'en';
+  try{ var saved = localStorage.getItem('tollhouse-lang'); if(saved==='en'||saved==='af'){ initial = saved; } }catch(e){}
+  applyLang(initial);
+
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* reveal on scroll */
+  var revealEls = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window && !reduced){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, {threshold:.15, rootMargin:'0px 0px -40px 0px'});
+    revealEls.forEach(function(el){ io.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add('in'); });
+  }
+
+  /* count-up stats */
+  var counters = document.querySelectorAll('.stat .num');
+  function runCounter(el){
+    var target = parseInt(el.getAttribute('data-count'),10) || 0;
+    var prefix = el.getAttribute('data-prefix') || '';
+    var suffix = el.getAttribute('data-suffix') || '';
+    if(reduced){ el.textContent = prefix+target+suffix; return; }
+    var start = null, dur = 1300;
+    function step(ts){
+      if(!start) start = ts;
+      var p = Math.min(1, (ts-start)/dur);
+      var eased = 1 - Math.pow(1-p, 3);
+      el.textContent = prefix + Math.round(eased*target) + suffix;
+      if(p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  if('IntersectionObserver' in window){
+    var cio = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){ runCounter(en.target); cio.unobserve(en.target); }
+      });
+    }, {threshold:.6});
+    counters.forEach(function(el){ cio.observe(el); });
+  } else {
+    counters.forEach(runCounter);
+  }
+
+  /* journey path progress + marker */
+  var path = document.getElementById('journeyPath');
+  var marker = document.getElementById('journeyMarker');
+  var journeySection = document.getElementById('journey');
+  if(path && marker && journeySection){
+    var len = path.getTotalLength();
+    var journeyActive = false;
+    function updateJourney(){
+      var rect = journeySection.getBoundingClientRect();
+      var vh = window.innerHeight || document.documentElement.clientHeight;
+      var total = rect.height + vh;
+      var scrolled = vh - rect.top;
+      var progress = Math.max(0, Math.min(1, scrolled/total));
+      if(reduced){ progress = 1; }
+      var pt = path.getPointAtLength(len*progress);
+      marker.setAttribute('cx', pt.x);
+      marker.setAttribute('cy', pt.y);
+      path.style.strokeDashoffset = String((1-progress)*40);
+    }
+    var ticking = false;
+    function onScroll(){
+      if(!ticking){
+        requestAnimationFrame(function(){ updateJourney(); ticking = false; });
+        ticking = true;
+      }
+    }
+    if('IntersectionObserver' in window){
+      var jio = new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          journeyActive = en.isIntersecting;
+          if(journeyActive){ updateJourney(); }
+        });
+      }, {threshold:0});
+      jio.observe(journeySection);
+    }
+    window.addEventListener('scroll', function(){ if(journeyActive || reduced) onScroll(); }, {passive:true});
+    window.addEventListener('resize', updateJourney);
+    updateJourney();
+  }
+
+  /* hero parallax */
+  var heroParallax = document.getElementById('heroParallax');
+  var heroBg = document.getElementById('heroBg');
+  if(heroParallax && !reduced){
+    var hticking = false;
+    window.addEventListener('scroll', function(){
+      if(!hticking){
+        requestAnimationFrame(function(){
+          var y = window.scrollY || window.pageYOffset;
+          if(y < 900){ heroParallax.style.transform = 'translateY(' + (y*0.18) + 'px)'; }
+          hticking = false;
+        });
+        hticking = true;
+      }
+    }, {passive:true});
+  }
+
+  /* sticky CTA visibility */
+  var stickyCta = document.getElementById('stickyCta');
+  var hero = document.querySelector('.hero');
+  if(stickyCta && hero && 'IntersectionObserver' in window){
+    var sio = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        stickyCta.classList.toggle('show', !en.isIntersecting);
+      });
+    }, {threshold:0});
+    sio.observe(hero);
+  }
+})();
+</script>
